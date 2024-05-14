@@ -13,9 +13,9 @@ class RoleController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:view role', ['only' => ['index','show']]);
-        $this->middleware('permission:create role', ['only' => ['create','store']]);
-        $this->middleware('permission:edit role', ['only' => ['edit','update']]);
+        $this->middleware('permission:view role', ['only' => ['index', 'show']]);
+        $this->middleware('permission:create role', ['only' => ['create', 'store']]);
+        $this->middleware('permission:edit role', ['only' => ['edit', 'update']]);
         $this->middleware('permission:delete role', ['only' => ['destroy']]);
     }
 
@@ -27,7 +27,7 @@ class RoleController extends Controller
     public function index()
     {
         $roles = Role::get();
-        return view('admin_Panel.role.roles-permissions',compact('roles'));
+        return view('admin_Panel.role.roles-permissions', compact('roles'));
     }
 
     /**
@@ -56,7 +56,7 @@ class RoleController extends Controller
             ]
         ]);
         Role::create($validatedData);
-        return redirect()->route('role.index')->with('message','Role added successfully !!!');
+        return redirect()->route('role.index')->with('message', 'Role added successfully !!!');
     }
 
     /**
@@ -80,7 +80,7 @@ class RoleController extends Controller
     {
         $permissions = Permission::get();
         $rolePermissions = $role->permissions;
-        return view('admin_Panel.role.edit-role',compact('role','permissions','rolePermissions'));
+        return view('admin_Panel.role.edit-role', compact('role', 'permissions', 'rolePermissions'));
     }
 
     /**
@@ -98,7 +98,7 @@ class RoleController extends Controller
                 'name' => [
                     'required',
                     'string',
-                    'unique:roles,name,'. $roleId,
+                    'unique:roles,name,' . $roleId,
                 ],
                 'permission' => [
                     'required'
@@ -108,8 +108,8 @@ class RoleController extends Controller
             $role->update($validatedData);
             $role->syncPermissions($request->permission);
 
-        DB::commit();
-        return redirect()->route('role.index')->with('message','Role updated successfully !!!');
+            DB::commit();
+            return redirect()->route('role.index')->with('message', 'Role updated successfully !!!');
         } catch (Exception $e) {
             return $e;
             DB::rollback();
@@ -126,6 +126,6 @@ class RoleController extends Controller
     {
         $role = Role::findOrFail($roleId);
         $role->delete();
-        return redirect()->route('role.index')->with('message','Role deleted successfully !!!');
+        return redirect()->route('role.index')->with('message', 'Role deleted successfully !!!');
     }
 }
