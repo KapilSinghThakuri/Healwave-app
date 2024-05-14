@@ -88,6 +88,9 @@ class DoctorRequest extends FormRequest
             ]
         ];
         if ($this->isMethod('PUT') || $this->isMethod('PATCH')) {
+            $rules['role'] = ['nullable'];
+        }
+        if ($this->isMethod('PUT') || $this->isMethod('PATCH')) {
             $rules['email'] = ['nullable', 'email'];
             $rules['password'] = ['nullable', 'min:6', 'confirmed',];
         }
