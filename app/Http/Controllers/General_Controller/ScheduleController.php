@@ -28,7 +28,7 @@ class ScheduleController extends Controller
         $doctor = $user->doctor;
         $department = $doctor->departments;
         $schedules = $doctor->schedules;
-        return view('general_dashboard.doctor_dashboard.schedule.index',compact('doctor','department','schedules'));
+        return view('general_dashboard.doctor_dashboard.schedule.index', compact('doctor', 'department', 'schedules'));
     }
 
     /**
@@ -57,10 +57,12 @@ class ScheduleController extends Controller
         $validatedData['doctor_id'] = $doctor_id;
         $schedule = Schedule::create($validatedData);
 
-        $admin = User::where('role_id', 1)->first();
-        $admin->notify(new ScheduleCreatedNotification($schedule, $doctor, 'schedule_create'));
+        $users = User::role(['Super Admin', 'Administrator'])->get();
+        foreach ($users as $user) {
+            $user->notify(new ScheduleCreatedNotification($schedule, $doctor, 'schedule_create'));
+        }
 
-        return redirect()->route('my-schedule.index')->with('message','Your Schedule has been set successfully !!!');
+        return redirect()->route('my-schedule.index')->with('message', 'Your Schedule has been set successfully !!!');
     }
 
     /**
@@ -83,8 +85,10 @@ class ScheduleController extends Controller
     public function edit($id)
     {
         $schedule = Schedule::findOrFail($id);
-        return view('general_dashboard.doctor_dashboard.schedule.edit-schedule',
-            compact('schedule'));
+        return view(
+            'general_dashboard.doctor_dashboard.schedule.edit-schedule',
+            compact('schedule')
+        );
     }
 
     /**
@@ -99,14 +103,16 @@ class ScheduleController extends Controller
         $validatedData = $request->validated();
         $schedule = Schedule::findOrFail($id);
         $schedule->update();
-        // $schedule = Schedule::where('id', $id)->update($validatedData);
 
         $user = Auth::user();
         $doctor = $user->doctor;
-        $admin = User::where('role_id', 1)->first();
-        $admin->notify(new ScheduleCreatedNotification($schedule, $doctor, 'schedule_update'));
 
-        return redirect()->route('my-schedule.index')->with('message','Your Schedule has been updated successfully !!!');
+        $users = User::role(['Super Admin', 'Administrator'])->get();
+        foreach ($users as $user) {
+            $user->notify(new ScheduleCreatedNotification($schedule, $doctor, 'schedule_update'));
+        }
+
+        return redirect()->route('my-schedule.index')->with('message', 'Your Schedule has been updated successfully !!!');
     }
 
     /**
@@ -125,6 +131,6 @@ class ScheduleController extends Controller
         $admin = User::where('role_id', 1)->first();
         $admin->notify(new ScheduleCreatedNotification($schedule, $doctor, 'schedule_delete'));
 
-        return redirect()->route('my-schedule.index')->with('message','Your Schedule has been deleted successfully !!!');
+        return redirect()->route('my-schedule.index')->with('message', 'Your Schedule has been deleted successfully !!!');
     }
 }

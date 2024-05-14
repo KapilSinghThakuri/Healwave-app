@@ -2,22 +2,18 @@
 
 namespace App\Http\Controllers\General_Controller;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\ProfileRequest;
-use App\Models\Department;
+use Exception;
 use App\Models\Doctor;
-use App\Models\Education;
-use App\Models\Experience;
-use App\Models\User;
-use App\Models\Address;
-use App\Models\Country;
 use App\Models\District;
 use App\Models\Province;
+use App\Models\Education;
+use App\Models\Department;
+use App\Models\Experience;
 use App\Models\Municipality;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\ProfileRequest;
 
 class ProfileController extends Controller
 {
@@ -25,23 +21,25 @@ class ProfileController extends Controller
     {
         $users = Auth::user();
         $id = $users->id;
-        $doctor_basic = Doctor::where('user_id', $id)->with('educations','experiences')->firstOrFail();
+        $doctor_basic = Doctor::where('user_id', $id)->with('educations', 'experiences')->firstOrFail();
         $temp_province = Province::where('id', $doctor_basic->temp_province_id)->first();
         $temp_district = District::where('id', $doctor_basic->temp_district_id)->first();
         $temp_municipality = Municipality::where('id', $doctor_basic->temp_municipality_id)->first();
 
-        return view('general_dashboard.doctor_dashboard.profile.index',
-            compact('doctor_basic','temp_province','temp_district','temp_municipality'));
+        return view(
+            'general_dashboard.doctor_dashboard.profile.index',
+            compact('doctor_basic', 'temp_province', 'temp_district', 'temp_municipality')
+        );
     }
-////////////////////////           PROFILE EDIT PART               ///////////////////////////////
+    ////////////////////////           PROFILE EDIT PART               ///////////////////////////////
     public function edit()
     {
         $users = Auth::user();
         $id = $users->id;
         $doctor_basic = Doctor::where('user_id', $id)->firstOrFail();
         $doctor_id = $doctor_basic->id;
-        $doctor_edu = Education::where('doctor_id',$doctor_id)->first();
-        $doctor_exp = Experience::where('doctor_id',$doctor_id)->first();
+        $doctor_edu = Education::where('doctor_id', $doctor_id)->first();
+        $doctor_exp = Experience::where('doctor_id', $doctor_id)->first();
 
         $countries = DB::table('countries')->get();
         $provinces = DB::table('provinces')->get();
@@ -59,14 +57,27 @@ class ProfileController extends Controller
         $related_district = $doctor_basic->district;
         $related_province = $doctor_basic->province;
 
-        return view('general_dashboard.doctor_dashboard.profile.edit',
-            compact('doctor_basic','doctor_edu','doctor_exp','related_department',
-            'related_municipality','related_district','related_province',
-            'departments','countries','provinces','doctor_districts','doctor_municipalities'));
+        return view(
+            'general_dashboard.doctor_dashboard.profile.edit',
+            compact(
+                'doctor_basic',
+                'doctor_edu',
+                'doctor_exp',
+                'related_department',
+                'related_municipality',
+                'related_district',
+                'related_province',
+                'departments',
+                'countries',
+                'provinces',
+                'doctor_districts',
+                'doctor_municipalities'
+            )
+        );
     }
     public function getDistrictByProvinceEdit($provinceId)
     {
-        $districts = District::where('province_id',$provinceId)->get();
+        $districts = District::where('province_id', $provinceId)->get();
         return response()->json($districts);
     }
     public function getMunicipalityByDistrictEdit($districtId)
@@ -77,7 +88,7 @@ class ProfileController extends Controller
 
 
 
-////////////////////////           PROFILE UPDATE PART               ///////////////////////////////
+    ////////////////////////           PROFILE UPDATE PART               ///////////////////////////////
     public function update(ProfileRequest $request)
     {
         $validatedData = $request->validated();
@@ -86,9 +97,9 @@ class ProfileController extends Controller
             $users = Auth::user();
             $id = $users->id;
             // Update user details
-            $username = $validatedData['first_name'] .' '. $validatedData['middle_name'] .' '. $validatedData['last_name'];
-            $user_address = $validatedData['province'] .'-'. $validatedData['district'] .'-'. $validatedData['street'];
-            $users -> update([
+            $username = $validatedData['first_name'] . ' ' . $validatedData['middle_name'] . ' ' . $validatedData['last_name'];
+            $user_address = $validatedData['province'] . '-' . $validatedData['district'] . '-' . $validatedData['street'];
+            $users->update([
                 'username' => $username,
                 'email' => $validatedData['email'],
                 'address' => $user_address,
@@ -99,7 +110,7 @@ class ProfileController extends Controller
             $doctor = $users->doctor;
             if ($request->hasFile('profile')) {
                 $file = $request->file('profile');
-                $fileName = time().'.'.$file->getClientOriginalExtension();
+                $fileName = time() . '.' . $file->getClientOriginalExtension();
 
                 // Delete the previous image if it exists
                 if ($doctor->profile) {
@@ -111,12 +122,12 @@ class ProfileController extends Controller
 
                 $file->move(public_path('admin_Assets/img/doctors'), $fileName);
                 $doctor->update([
-                    'profile' => '/admin_Assets/img/doctors'.'/'.$fileName,
+                    'profile' => '/admin_Assets/img/doctors' . '/' . $fileName,
                 ]);
             }
             $doctorData = [
                 'user_id' => $id,
-                'department_id' =>$validatedData['department_id'],
+                'department_id' => $validatedData['department_id'],
                 'first_name' => $validatedData['first_name'],
                 'middle_name' => $validatedData['middle_name'],
                 'last_name' => $validatedData['last_name'],
@@ -153,7 +164,8 @@ class ProfileController extends Controller
             Education::where('doctor_id', $doctor->id)->delete();
             foreach ($validatedData['institute_name'] as $key => $value) {
                 Education::updateOrCreate(
-                    [   'doctor_id' => $doctor->id,
+                    [
+                        'doctor_id' => $doctor->id,
                         'institute_name' => $validatedData['institute_name'][$key],
                         'medical_degree' => $validatedData['medical_degree'][$key],
                         'graduation_year_BS' => $validatedData['graduation_year_BS'][$key],
@@ -166,7 +178,8 @@ class ProfileController extends Controller
             Experience::where('doctor_id', $doctor->id)->delete();
             foreach ($validatedData['org_name'] as $key => $value) {
                 Experience::updateOrCreate(
-                    [   'doctor_id' => $doctor->id,
+                    [
+                        'doctor_id' => $doctor->id,
                         'license_no' => $validatedData['license_no'],
                         'org_name' => $validatedData['org_name'][$key],
                         'start_date_BS' => $validatedData['start_date_BS'][$key],
@@ -179,7 +192,7 @@ class ProfileController extends Controller
             }
 
             DB::commit();
-            return redirect()->route('doctor.profile')->with('success_message','Your profile has been updated successfully !!!');
+            return redirect()->route('doctor.profile')->with('success_message', 'Your profile has been updated successfully !!!');
         } catch (Exception $e) {
             DB::rollback();
             return $e->getMessage();

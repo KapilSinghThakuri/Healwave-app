@@ -51,7 +51,7 @@
                         <span> WebsiteInfo </span></a>
                 </li>
                 <li
-                    class="dropdown {{ request()->routeIs('page.*') || request()->routeIs('faq.*') || request()->routeIs('album.*') || request()->routeIs('gallery.*') || request()->routeIs('feedback.*') || request()->routeIs('banner.*') ? 'active' : '' }}">
+                    class="dropdown {{ request()->routeIs('page.*') || request()->routeIs('faq.*') || request()->routeIs('feedback.*') || request()->routeIs('banner.*') ? 'active' : '' }}">
                     <a href="#" class="dropdown-toggle" data-toggle="collapse" data-target="#pages-dropdown">
                         <i class="fa fa-list-alt" aria-hidden="true"></i><span>Pages</span>
                     </a>

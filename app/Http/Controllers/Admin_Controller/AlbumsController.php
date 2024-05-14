@@ -16,8 +16,8 @@ class AlbumsController extends Controller
 
     public function index()
     {
-        $categories = $this->categories->orderBy('display_order','asc')->get();
-        return view('admin_Panel.gallery_album.albums',compact('categories'));
+        $categories = $this->categories->orderBy('display_order', 'asc')->get();
+        return view('admin_Panel.gallery_album.albums', compact('categories'));
     }
 
     /**
@@ -39,22 +39,22 @@ class AlbumsController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'display_order' => ['required','numeric','min:1'],
-            'album_title' => ['required','string', 'max:30'],
+            'display_order' => ['required', 'numeric', 'min:1'],
+            'album_title' => ['required', 'string', 'max:30'],
             'status' => ['required'],
-            'album_cover' => ['nullable','image','mimes:jpeg,png,gif','max:2048'],
+            'album_cover' => ['nullable', 'image', 'mimes:jpeg,png,gif', 'max:2048'],
         ]);
         if ($request->hasFile('album_cover')) {
             $file = $request->file('album_cover');
-            $fileName = time().'.'.$file->getClientOriginalExtension();
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
             $destinationPath = public_path('admin_Assets/img/album-cover');
 
             $file->move($destinationPath, $fileName);
-            $validatedData['album_cover'] = '/admin_Assets/img/album-cover'.'/'.$fileName;
+            $validatedData['album_cover'] = '/admin_Assets/img/album-cover' . '/' . $fileName;
         }
 
         $this->categories->create($validatedData);
-        return redirect()->route('album.index')->with('message','New Album Added Successfully!!');
+        return redirect()->route('album.index')->with('message', 'New Album Added Successfully!!');
     }
 
     /**
@@ -65,8 +65,8 @@ class AlbumsController extends Controller
      */
     public function show($id)
     {
-        $photos = Gallery::where('gallery_category_id', $id)->orderBy('display_order','asc')->get();
-        return view('admin_Panel.gallery_album.view-album',compact('photos'));
+        $photos = Gallery::where('gallery_category_id', $id)->orderBy('display_order', 'asc')->get();
+        return view('admin_Panel.gallery_album.view-album', compact('photos'));
     }
 
     /**
@@ -77,8 +77,8 @@ class AlbumsController extends Controller
      */
     public function edit($id)
     {
-        $album = $this->categories->where('id',$id)->first();
-        return view('admin_Panel.gallery_album.edit-album',compact('album'));
+        $album = $this->categories->where('id', $id)->first();
+        return view('admin_Panel.gallery_album.edit-album', compact('album'));
     }
 
     /**
@@ -91,14 +91,14 @@ class AlbumsController extends Controller
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'display_order' => ['required','numeric','min:1'],
-            'album_title' => ['required','string', 'max:30'],
+            'display_order' => ['required', 'numeric', 'min:1'],
+            'album_title' => ['required', 'string', 'max:30'],
             'status' => ['required'],
-            'album_cover' => ['nullable','image','mimes:jpeg,png,gif','max:2048'],
+            'album_cover' => ['nullable', 'image', 'mimes:jpeg,png,gif', 'max:2048'],
         ]);
         if ($request->hasFile('album_cover')) {
             $file = $request->file('album_cover');
-            $fileName = time().'.'.$file->getClientOriginalExtension();
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
             $destinationPath = public_path('admin_Assets/img/album-cover');
 
             if ($validatedData['album_cover']) {
@@ -109,11 +109,11 @@ class AlbumsController extends Controller
             }
 
             $file->move($destinationPath, $fileName);
-            $validatedData['album_cover'] = '/admin_Assets/img/album-cover'.'/'.$fileName;
+            $validatedData['album_cover'] = '/admin_Assets/img/album-cover' . '/' . $fileName;
         }
-        $album = $this->categories->where('id',$id)->first();
+        $album = $this->categories->where('id', $id)->first();
         $album->update($validatedData);
-        return redirect()->route('album.index')->with('message','New Album Updated Successfully!!');
+        return redirect()->route('album.index')->with('message', 'New Album Updated Successfully!!');
     }
 
     /**
@@ -124,7 +124,7 @@ class AlbumsController extends Controller
      */
     public function destroy($id)
     {
-        $album = $this->categories->where('id',$id)->first();
+        $album = $this->categories->where('id', $id)->first();
 
         if ($album['album_cover']) {
             $previousImagePath = public_path($album['album_cover']);
@@ -133,6 +133,6 @@ class AlbumsController extends Controller
             }
         }
         $album->delete();
-        return redirect()->route('album.index')->with('message','New Album Deleted Successfully!!');
+        return redirect()->route('album.index')->with('message', 'New Album Deleted Successfully!!');
     }
 }

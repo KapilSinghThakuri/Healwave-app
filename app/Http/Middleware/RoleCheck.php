@@ -22,7 +22,7 @@ class RoleCheck
         if ($users) {
             if ($users->hasRole(['Super Admin', 'Administrator'])) {
                 return $next($request);
-            } elseif ($users->hasRole('Doctor')) {
+            } elseif ($users->hasRole('doctor')) {
                 return redirect()->route('doctor.dashboard');
             } else {
                 return redirect()->route('login');
