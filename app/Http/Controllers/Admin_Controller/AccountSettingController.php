@@ -11,4 +11,11 @@ class AccountSettingController extends Controller
     {
         return view('admin_Panel.setting.account-setting');
     }
+
+    public function deleteAccount()
+    {
+        $user = auth()->user();
+        $user->delete();
+        return redirect()->route('login')->with('message', 'Your account has been deleted successfully!!');
+    }
 }

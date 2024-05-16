@@ -26,8 +26,10 @@ use App\Http\Controllers\General_Controller\DoctorDashboardController;
 use App\Http\Controllers\General_Controller\ProfileController;
 use App\Http\Controllers\General_Controller\ScheduleController;
 use App\Http\Controllers\General_Controller\PatientAppointmentController;
-
+use App\Http\Controllers\Website\AboutUsController;
+use App\Http\Controllers\Website\ContactController;
 use App\Http\Controllers\Website\GeneralDashboardController;
+use App\Http\Controllers\Website\ServiceController;
 use App\Http\Controllers\Website\WebsiteDepartmentController;
 use App\Http\Controllers\Website\WebsiteGalleryController;
 
@@ -119,6 +121,7 @@ Route::prefix('Healwave/admin')->group(function () {
         Route::view('appointment/edit', 'admin_Panel.appointment.edit-appointment')->name('appointment.edit');
 
         Route::get('settings', [AccountSettingController::class, 'settings'])->name('admin.setting');
+        Route::delete('settings/deleteAccount', [AccountSettingController::class, 'deleteAccount'])->name('admin.deleteAccount');
         // });
     });
 });
@@ -150,11 +153,15 @@ Route::prefix('Healwave')->group(function () {
 
     // Website Routing
     Route::controller(GeneralDashboardController::class)->group(function () {
-        Route::get('dashboard/{locale?}', 'index')->name('general.dashboard');
+        Route::get('dashboard/', 'index')->name('general.dashboard');
         Route::get('dashboard/appointment-form/{schedule}/{interval}', 'appointment')->name('appointment.create');
         Route::post('dashboard/appointment-form/store/{scheduleId}', 'appointmentStore')->name('appointment.store');
+        Route::get('/language/change/{lang}', 'changeLanguage')->name('lang.change');
     });
 
     Route::get('department', [WebsiteDepartmentController::class, 'index'])->name('website.department');
     Route::get('gallery', [WebsiteGalleryController::class, 'index'])->name('website.gallery');
+    Route::get('about-us', [AboutUsController::class, 'index'])->name('website.aboutus');
+    Route::get('contact', [ContactController::class, 'index'])->name('website.contact');
+    Route::get('services', [ServiceController::class, 'index'])->name('website.service');
 });

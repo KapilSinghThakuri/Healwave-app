@@ -9,6 +9,7 @@ use App\Models\Schedule;
 use App\Models\Department;
 use App\Models\Appointment;
 use App\Models\DynamicPage;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
@@ -25,9 +26,6 @@ class GeneralDashboardController extends Controller
 
     public function index($locale = null)
     {
-        App::setLocale($locale);
-        session()->put('locale', $locale);
-
         $departments = Department::all();
         if ($departments) {
             $dept_related_doctor = Department::with('doctors')->first();
@@ -51,6 +49,13 @@ class GeneralDashboardController extends Controller
                 'pages'
             )
         );
+    }
+
+    public function changeLanguage(Request $request, $locale)
+    {
+        App::setLocale($locale);
+        session()->put('locale', $locale);
+        return back();
     }
 
 

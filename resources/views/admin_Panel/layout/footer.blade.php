@@ -1,34 +1,35 @@
+<div class="sidebar-overlay" data-reff=""></div>
+<script src="{{ asset('admin_assets/js/jquery-3.2.1.min.js') }}"></script>
+<script src="{{ asset('admin_assets/js/popper.min.js') }}"></script>
+<script src="{{ asset('admin_assets/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('admin_assets/js/jquery.slimscroll.js') }}"></script>
+<script src="{{ asset('admin_assets/js/Chart.bundle.js') }}"></script>
+<script src="{{ asset('admin_assets/js/chart.js') }}"></script>
+<script src="{{ asset('admin_assets/js/app.js') }}"></script>
+<!-- Nepali Date Picker -->
+<script src="https://nepalidatepicker.sajanmaharjan.com.np/nepali.datepicker/js/nepali.datepicker.v4.0.1.min.js"
+    type="text/javascript"></script>
+<!-- Include Flatpickr JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<!-- toastr JS Link  -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<!-- Doctor JS Link -->
+<script src="{{ asset('admin_assets/custom-js/doctor.js') }}"></script>
+<!-- patients JS Link -->
+<script src="{{ asset('admin_assets/custom-js/patients.js') }}"></script>
+<!-- Setting JS Link -->
+<script src="{{ asset('admin_assets/custom-js/setting.js') }}"></script>
+<!-- Menu JS Link -->
+<script src="{{ asset('admin_assets/custom-js/menu.js') }}"></script>
+<!-- Index JS Link -->
+<script src="{{ asset('admin_assets/custom-js/index.js') }}"></script>
 
-    <div class="sidebar-overlay" data-reff=""></div>
-    <script src="{{ asset('admin_assets/js/jquery-3.2.1.min.js')}}"></script>
-    <script src="{{ asset('admin_assets/js/popper.min.js')}}"></script>
-    <script src="{{ asset('admin_assets/js/bootstrap.min.js')}}"></script>
-    <script src="{{ asset('admin_assets/js/jquery.slimscroll.js')}}"></script>
-    <script src="{{ asset('admin_assets/js/Chart.bundle.js')}}"></script>
-    <script src="{{ asset('admin_assets/js/chart.js')}}"></script>
-    <script src="{{ asset('admin_assets/js/app.js')}}"></script>
-    <!-- Nepali Date Picker -->
-    <script src="https://nepalidatepicker.sajanmaharjan.com.np/nepali.datepicker/js/nepali.datepicker.v4.0.1.min.js" type="text/javascript"></script>
-    <!-- Include Flatpickr JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <!-- toastr JS Link  -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    <!-- Doctor JS Link -->
-    <script src="{{ asset('admin_assets/custom-js/doctor.js') }}"></script>
-    <!-- patients JS Link -->
-    <script src="{{ asset('admin_assets/custom-js/patients.js') }}"></script>
-    <!-- Setting JS Link -->
-    <script src="{{ asset('admin_assets/custom-js/setting.js') }}"></script>
-    <!-- Menu JS Link -->
-    <script src="{{ asset('admin_assets/custom-js/menu.js') }}"></script>
-    <!-- Index JS Link -->
-    <script src="{{ asset('admin_assets/custom-js/index.js') }}"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+@stack('scripts')
 
-    @stack('scripts')
-
-  <script type="text/javascript">
+<script type="text/javascript">
     @if (Session::has('message'))
         toastr.options = {
             "closeButton": true,
@@ -61,7 +62,7 @@
         toastr.warning("{{ session('warning') }}");
     @endif
 
-    $(function () {
+    $(function() {
         $('[data-toggle="tooltip"]').tooltip();
     });
 
@@ -107,18 +108,18 @@
             $.ajax({
                 url: '/Healwave/admin/notifications/unreadNotificationsCount',
                 method: 'GET',
-                success: function(response){
+                success: function(response) {
                     console.log(response);
                     $('#unreadNotificationsCount').text(response.unreadNotificationsCount);
                 },
-                error: function(error){
+                error: function(error) {
                     console.log(error);
                 }
             })
         }
         notificationCount();
     });
-
-  </script>
+</script>
 </body>
+
 </html>

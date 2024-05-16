@@ -15,7 +15,7 @@ class DepartmentHelper
     }
     public function dropdown()
     {
-        $departmentName = $this->department->orderBy('id', 'desc')->pluck('department_name','id');
+        $departmentName = $this->department->orderBy('id', 'desc')->pluck('department_name', 'id');
         return $departmentName;
     }
     public function getAllDepartment()
@@ -32,12 +32,10 @@ class DepartmentHelper
                 return 'fas fa-radiation';
             case 'Neurology':
                 return 'fas fa-brain';
-            case 'OT':
+            case 'Emergency Department':
                 return 'fas fa-syringe';
-            case 'Plastic Surgery':
+            case 'Surgery':
                 return 'fas fa-cut';
-            case 'Eye Care':
-                return 'fas fa-eye';
             default:
                 return 'fas fa-hospital-user';
         }

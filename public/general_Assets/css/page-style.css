@@ -1,0 +1,37 @@
+.slider-header-wrapper {
+    margin-top: 68px;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.slider-header {
+    height: 350px;
+    background-size: cover;
+}
+
+.row {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.col-lg-12 {
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.slider-header-wrapper .slider-title h3 {
+    color: #102039;
+    font-size: 44px;
+    font-weight: 500;
+    text-transform: capitalize;
+    line-height: 1;
+    font-family: "Muli", sans-serif;
+}
