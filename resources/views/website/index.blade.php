@@ -219,13 +219,13 @@
                             @foreach ($departments as $key => $department)
                                 <div class="tab-pane {{ $key == 0 ? 'active' : '' }}" id="tab-{{ $department->id }}">
                                     <div class="row gy-4">
-                                        <div class="col-lg-8 details order-2 order-lg-1">
+                                        <div class="col-lg-12 details order-2 order-lg-1">
                                             <h3>{{ $department->department_name }}'s Available Doctors</h3>
 
                                             <div class="row" id="available-doctors">
                                                 @foreach ($department->doctors as $doctor)
-                                                    <div class="col-md-4">
-                                                        <div class="card bg-primary profile-card"
+                                                    <div class="col-md-3">
+                                                        <div class="card bg-primary profile-card mb-2"
                                                             data-doctor-id="{{ $doctor->id }}" style="cursor: pointer;"
                                                             data-bs-toggle="modal"
                                                             data-bs-target="#scheduleModal-{{ $doctor->id }}">
