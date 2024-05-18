@@ -50,7 +50,7 @@
                                                     style="font-size: 20px;" title="Click For Edit"><i
                                                         class="fa fa-pencil-square-o mr-2" aria-hidden="true"></i></a>
                                             @endcan
-                                            @can('delete department')
+                                            @can('delete appointment')
                                                 <a href="#" data-id="{{ $department->id }}" data-toggle="modal"
                                                     data-target="#delete_department" style="font-size: 25px; color: red;"
                                                     title="Click For Delete"><i class="fa fa-trash-o"

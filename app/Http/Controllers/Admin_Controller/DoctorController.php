@@ -97,8 +97,6 @@ class DoctorController extends Controller
                 $fileName = time() . '.' . $file->getClientOriginalExtension();
                 $file->move(public_path('admin_Assets/img/doctors'), $fileName);
                 $validatedData['profile'] = '/admin_Assets/img/doctors' . '/' . $fileName;
-            } else {
-                return back()->with('fail_message', 'Please upload a profile picture!!!');
             }
             $validatedData['user_id'] = $user_id;
             $doctor = Doctor::create($validatedData);
@@ -316,20 +314,28 @@ class DoctorController extends Controller
      */
     public function destroy($id)
     {
-        $doctor_edu = Education::where('doctor_id', $id)->delete();
-        $doctor_exp = Experience::where('doctor_id', $id)->delete();
+        $doctor = Doctor::findOrFail($id);
 
-        $doctor_basic = Doctor::where('id', $id)->first();
-        if ($doctor_basic) {
-            $doctor_basic->delete();
+        if ($doctor->experiences()->exists()) {
+            $doctorExperiences = $doctor->experiences;
+            foreach ($doctorExperiences as $doctorExp) {
+                $doctorExp->delete();
+            }
         }
 
-        $user_id = $doctor_basic->user_id;
-        if ($user_id) {
-            $doctor = User::find($user_id);
-            if ($doctor) {
-                $doctor->delete();
+        if ($doctor->educations()->exists()) {
+            $doctorEducations = $doctor->educations;
+            foreach ($doctorEducations as $doctorEdu) {
+                $doctorEdu->delete();
             }
+        }
+
+        if ($doctor) {
+            $doctor->delete();
+        }
+
+        if ($doctor->user()->exists()) {
+            $doctor->user->delete();
         }
         return redirect()->route('doctor.index')->with('message', 'Doctor deleted Successfully !!!');
     }
@@ -468,7 +474,6 @@ class DoctorController extends Controller
         $searchedInput = $request->input('input_search');
 
         $searchResults = $searchResults->get();
-        // dd($searchResults);
 
         return view('admin_Panel.doctor.doctors', [
             'doctors' => $searchResults,

@@ -14,6 +14,6 @@ class Country extends Model
 
     public function doctors(): HasOne
     {
-        return $this->hasOne(Doctor::class, 'country_id','id');
+        return $this->hasOne(Doctor::class, 'country_id', 'id');
     }
 }

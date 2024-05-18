@@ -1,4 +1,5 @@
 @inject('siteinfo_helper', 'App\Helpers\WebsiteInfoHelper')
+@inject('menu_helper', 'App\Helpers\MenuHelper')
 
 <!-- ======= Footer ======= -->
 <footer id="footer">
@@ -23,22 +24,29 @@
 
                 <div class="col-lg-2 col-md-6 footer-links">
                     <h4>Useful Links</h4>
-                    <ul class="mr-4">
-                        <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
-                        <li><i class="bx bx-chevron-right"></i> <a href="#">About us</a></li>
-                        <li><i class="bx bx-chevron-right"></i> <a href="#">Services</a></li>
-                        <li><i class="bx bx-chevron-right"></i> <a href="#">Terms of service</a></li>
-                        <li><i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
+                    <ul>
+                        @foreach ($menu_helper->menus() as $menu)
+                            @php
+                                $link = '';
+
+                                if ($menu->menu_type_id == 1) {
+                                    $link = $menu->models->first()->model_link;
+                                } elseif ($menu->menu_type_id == 2) {
+                                    $link = 'Healwave/' . $menu->pages->first()->slug;
+                                } else {
+                                    $link = $menu->external_link;
+                                }
+                            @endphp
+                            <li class="dropdown">
+                                <i class="bx bx-chevron-right"></i>
+                                <a class="nav-link scrollto" href="/{{ $link }}">
+                                    {{ $menu['menu_name'][$current_locale] }}
+                                </a>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
 
-                {{-- <div class="col-lg-4 col-md-6 footer-newsletter">
-                    <h4>Join Our Newsletter</h4>
-                    <p>Tamen quem nulla quae legam multos aute sint culpa legam noster magna</p>
-                    <form action="" method="post">
-                        <input type="email" name="email"><input type="submit" value="Subscribe">
-                    </form>
-                </div> --}}
                 <div class="col-lg-2 col-md-6 footer-links">
                     <h4>Join With Us</h4>
                     <ul>

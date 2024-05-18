@@ -1,5 +1,7 @@
 @include('admin_Panel.layout.header')
 
+@include('admin_Panel.layout.navbar')
+
 @include('admin_Panel.layout.sidebar')
 
 @yield('Main-container')

@@ -153,7 +153,7 @@
                     <div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
                         <div class="count-box">
                             <i class="fas fa-award"></i>
-                            <span data-purecounter-start="0" data-purecounter-end="150" data-purecounter-duration="1"
+                            <span data-purecounter-start="0" data-purecounter-end="25" data-purecounter-duration="1"
                                 class="purecounter"></span>
                             <p>Awards</p>
                         </div>

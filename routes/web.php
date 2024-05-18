@@ -147,7 +147,7 @@ Route::prefix('Healwave')->group(function () {
 
         Route::get('doctor/appointment', [PatientAppointmentController::class, 'index'])->name('patient.appointment');
         Route::get('doctor/appointment/view/{appointment}', [PatientAppointmentController::class, 'show'])->name('patient.appointment.view');
-
+        Route::get('appointment/exportpdf/{appointment}', [PatientAppointmentController::class, 'generateAppointmentPdf'])->name('appointment.exportpdf');
         Route::get('doctor/patients', [PatientAppointmentController::class, 'patientsIndex'])->name('patient.dashboard');
     });
 

@@ -444,7 +444,7 @@
                                     style="width: 130px; letter-spacing: 2px; font-size: 1.15rem;">Previous</button>
                                 <button type="submit" class="btn btn-primary ml-auto btn-lg"
                                     style="width: 120px; letter-spacing: 2px; font-size: 1.15rem;">Update</button>
-                                <!-- <button class="btn btn-primary submit-btn">Create Doctor</button> -->
+
                             </div>
                         </div>
                     </form>
