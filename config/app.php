@@ -43,7 +43,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application URL
+    | Application URL /Users/kapilthakuri/Documents/Laravel/HospitalMgmt-app/vendor/maatwebsite/excel/src/Maatwebsite/Excel/ExcelServiceProvider.php
     |--------------------------------------------------------------------------
     |
     | This URL is used by the console to properly generate URLs when using
@@ -185,13 +185,15 @@ return [
         Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
 
         Spatie\Permission\PermissionServiceProvider::class,
+
+        // Generate Pdf
         Barryvdh\Debugbar\ServiceProvider::class,
     ],
 
     /*
     |--------------------------------------------------------------------------
     | Class Aliases
-    |--------------------------------------------------------------------------
+    |cv--------------------------------------------------------------------------
     |
     | This array of class aliases will be registered when this application
     | is started. However, feel free to register as many as you wish as
@@ -244,6 +246,7 @@ return [
 
         // Google Recaptcha
         'NoCaptcha' => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
+
     ],
 
 ];

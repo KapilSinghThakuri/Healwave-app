@@ -98,7 +98,7 @@
 
             <nav id="navbar" class="navbar order-last order-lg-0">
                 <ul>
-
+                    {{-- @dd($menu_helper->menus()[3]->child_menus->first()->menu_name['en']); --}}
                     @foreach ($menu_helper->menus() as $menu)
                         @php
                             $link = '';
@@ -106,16 +106,15 @@
                             if ($menu->menu_type_id == 1) {
                                 $link = $menu->models->first()->model_link;
                             } elseif ($menu->menu_type_id == 2) {
-                                $link = $menu->pages->first()->slug;
+                                $link = 'Healwave/' . $menu->pages->first()->slug;
                             } else {
                                 $link = $menu->external_link;
                             }
-                            // @dd(request()->url());
                             // Determining if this is the active menu based on the route
-                            $is_active = request()->url() == $link;
+                            $is_active = request()->path() == $link;
                         @endphp
                         <li class="dropdown">
-                            <a class="nav-link scrollto {{ $is_active ? 'active' : '' }}" href="{{ $link }}">
+                            <a class="nav-link scrollto {{ $is_active ? 'active' : '' }}" href="/{{ $link }}">
                                 {{ $menu['menu_name'][$current_locale] }}
                                 @if ($menu->child_menus()->exists())
                                     <i class="bi bi-chevron-down"></i>
@@ -124,12 +123,25 @@
                             @if ($menu->child_menus()->exists())
                                 <ul>
                                     @foreach ($menu->child_menus as $child_menu)
+                                        @php
+                                            if ($child_menu->menu_type_id == 1) {
+                                                $parent = $child_menu->parent_menu->get();
+
+                                                $parent_link = $parent->models->get();
+                                                // @dd($parent_link);
+                                            } elseif ($child_menu->menu_type_id == 2) {
+                                                // @dd($child_menu->parent_menu->menu_name['en']);
+                                                // $parent = $child_menu->parent_menu->get();
+                                                // @dd($parent);
+                                                // $parent_link = $parent->models->first();
+                                            }
+                                        @endphp
                                         <li>
                                             <a
                                                 href="
                                             @if ($child_menu->menu_type_id == 1) {{ $child_menu->models->first()->model_link }}
                                             @elseif ($child_menu->menu_type_id == 2)
-                                                {{ $child_menu->pages->first()->slug }}
+                                                /Healwave/{{ $child_menu->pages->first()->slug }}
                                             @else
                                                 {{ $child_menu->external_link }} @endif
                                             ">
@@ -144,7 +156,8 @@
                 </ul>
                 <i class="bi bi-list mobile-nav-toggle"></i>
             </nav>
-            <a href="#departments" class="appointment-btn scrollto"><span class="d-none d-md-inline">Make an</span>
+            <a href="/Healwave/dashboard/#departments" class="appointment-btn scrollto"><span
+                    class="d-none d-md-inline">Make an</span>
                 Appointment</a>
         </div>
     </header>

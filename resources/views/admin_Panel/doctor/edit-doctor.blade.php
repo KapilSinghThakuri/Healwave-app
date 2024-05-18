@@ -308,9 +308,9 @@
                                         <label>Graduation Year[BS] <span class="text-danger">*</span></label>
                                         <div class="cal-icon">
                                             <input type="dob" id="grad_yearBS"
-                                                value="{{ $doctor_edu->graduation_year_BS }}"
-                                                name="graduation_year_BS[]" placeholder="Select Your Graduation Year"
-                                                name="grad_year" class="form-control datetimepicker">
+                                                value="{{ $doctor_edu->graduation_year_BS }}" name="graduation_year_BS[]"
+                                                placeholder="Select Your Graduation Year" name="grad_year"
+                                                class="form-control datetimepicker">
                                         </div>
                                     </div>
                                 </div>
@@ -416,51 +416,10 @@
                             <div class="m-t-20 d-flex justify-content-between">
                                 <button type="button" class="btn btn-lg mr-auto btn-outline-primary prevBtn"
                                     style="width: 130px; letter-spacing: 2px; font-size: 1.15rem;">Previous</button>
-                                <!-- <button type="button" class="btn btn-lg ml-auto btn-primary nextBtn" style="width: 120px; letter-spacing: 2px; font-size: 1.15rem;">Next</button> -->
                                 <button type="submit" class="btn btn-primary ml-auto btn-lg"
                                     style="width: 120px; letter-spacing: 2px; font-size: 1.15rem;">Update</button>
                             </div>
                         </div>
-
-                        <!-- User & password details -->
-                        <!-- <div id="step5" class="step" style="display:none;">
-                                <div class="row">
-                                    <div class="col-lg-8 offset-lg-2">
-                                        <h4 class="page-title text-center border-bottom">Account Credentials</h4>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Email <span class="text-danger">*</span></label>
-                                            <input name="email" class="form-control" value="{{ $doctor_basic->email }}" type="email">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Password <span class="text-danger">*</span></label>
-                                            <input id="password" name="password" class="form-control" type="password">
-                                            @error('password')
-        <span class="text-danger">{{ $message }}</span>
-    @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Confirm Password <span class="text-danger">*</span></label>
-                                            <input id="password_confirmation" name="password_confirmation" class="form-control" type="password">
-                                            @error('password_confirmation')
-        <span class="text-danger">{{ $message }}</span>
-    @enderror
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="m-t-20 d-flex justify-content-between">
-                                    <button type="button" class="btn btn-outline-primary mr-auto btn-lg prevBtn" style="width: 130px; letter-spacing: 2px; font-size: 1.15rem;">Previous</button>
-                                    <button type="submit" class="btn btn-primary ml-auto btn-lg" style="width: 120px; letter-spacing: 2px; font-size: 1.15rem;">Update</button>
-                                </div>
-                            </div> -->
                     </form>
                 </div>
             </div>

@@ -515,10 +515,6 @@
                                 </div>
                             </div>
 
-                            <!-- <div class="m-t-20 text-center">
-                                                <button type="button" class="btn btn-secondary prevBtn">Previous</button>
-                                                <button type="submit" class="createDoctor btn btn-primary">Create Doctor</button>
-                                            </div> -->
                             <div class="m-t-20 d-flex justify-content-between">
                                 <button type="button" class="btn btn-outline-primary mr-auto btn-lg prevBtn"
                                     style="width: 130px; height: 45px;  letter-spacing: 2px; font-size: 1.15rem;">Previous</button>

@@ -102,7 +102,6 @@ class DashboardController extends Controller
             $department_appointment_counts[] = $total_appointments;
             $department_name[] = $department->department_name;
         }
-        // dd($department_appointment_counts, $department_name);
 
         session([
             'deptStartDate' => $startDate,
