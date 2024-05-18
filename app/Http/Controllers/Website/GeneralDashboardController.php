@@ -24,7 +24,7 @@ class GeneralDashboardController extends Controller
         $this->pages = $pages;
     }
 
-    public function index($locale = null)
+    public function index()
     {
         $departments = Department::all();
         if ($departments) {

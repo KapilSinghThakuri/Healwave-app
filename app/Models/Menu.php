@@ -28,7 +28,7 @@ class Menu extends Model
 
     public function models()
     {
-        return $this->hasMany(Module::class,'id', 'model_id');
+        return $this->hasMany(Module::class, 'id', 'model_id');
     }
     public function pages()
     {
@@ -40,6 +40,6 @@ class Menu extends Model
     }
     public function parent_menu()
     {
-        return $this->belongsTo(Menu::class, 'id', 'parent_id');
+        return $this->belongsTo(Menu::class, 'parent_id', 'id');
     }
 }
