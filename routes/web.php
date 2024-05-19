@@ -84,6 +84,8 @@ Route::prefix('Healwave/admin')->group(function () {
             'menu' => MenuController::class,
             'websiteinfo' => WebsiteInfoController::class,
         ]);
+        Route::get('users/export/', [UserController::class, 'userExport'])->name('users.export');
+
         Route::PATCH('StatusUpdate/{menuId}', [MenuController::class, 'MenuStatusUpdate'])->name('menu.StatusUpdate');
 
         Route::resource('feedback', FeedbackController::class)->only(['index', 'store', 'show']);

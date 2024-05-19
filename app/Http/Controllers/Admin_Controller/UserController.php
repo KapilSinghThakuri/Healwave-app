@@ -2,21 +2,23 @@
 
 namespace App\Http\Controllers\Admin_Controller;
 
-use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Exports\UsersExport;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use App\Models\User;
 use Spatie\Permission\Models\Role;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:view user', ['only' => ['index','show']]);
-        $this->middleware('permission:create user', ['only' => ['create','store']]);
-        $this->middleware('permission:edit user', ['only' => ['edit','update']]);
+        $this->middleware('permission:view user', ['only' => ['index', 'show']]);
+        $this->middleware('permission:create user', ['only' => ['create', 'store']]);
+        $this->middleware('permission:edit user', ['only' => ['edit', 'update']]);
         $this->middleware('permission:delete user', ['only' => ['destroy']]);
     }
 
@@ -27,10 +29,14 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::orderBy('created_at','desc')->simplePaginate(10);
-        return view('admin_Panel.user.users',compact('users'));
+        $users = User::orderBy('created_at', 'desc')->simplePaginate(10);
+        return view('admin_Panel.user.users', compact('users'));
     }
 
+    public function userExport()
+    {
+        return Excel::download(new UsersExport, 'users.xlsx');
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -39,7 +45,7 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::pluck('name', 'id');
-        return view('admin_Panel.user.add-user',compact('roles'));
+        return view('admin_Panel.user.add-user', compact('roles'));
     }
 
     /**
@@ -60,7 +66,7 @@ class UserController extends Controller
 
             DB::commit();
             return redirect()->route('user.index')
-                ->with('message', $validatedData['username'].' has been joined our team!');
+                ->with('message', $validatedData['username'] . ' has been joined our team!');
         } catch (Exception $e) {
             DB::rollback();
             return $e;
@@ -87,8 +93,8 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $roles = Role::pluck('name', 'id');
-        $roleNames = $user->roles->pluck('name','id')->toArray();
-        return view('admin_Panel.user.edit-user',[
+        $roleNames = $user->roles->pluck('name', 'id')->toArray();
+        return view('admin_Panel.user.edit-user', [
             'roles' => $roles,
             'user' => $user,
             'roleNames' => $roleNames
@@ -102,13 +108,13 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,User $user)
+    public function update(Request $request, User $user)
     {
         DB::beginTransaction();
         try {
 
             $user->update([
-                'username'=> $request->username,
+                'username' => $request->username,
                 'password' => Hash::make($request->password),
                 'email' => $request->email,
                 'address' => $request->address,
@@ -118,7 +124,7 @@ class UserController extends Controller
 
             DB::commit();
             return redirect()->route('user.index')
-                ->with('message', $request->username.'s details has been updated!');
+                ->with('message', $request->username . 's details has been updated!');
         } catch (Exception $e) {
             DB::rollback();
             return $e;
@@ -135,6 +141,6 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
-        return redirect()->route('user.index')->with('message','User deleted successfully!!!');
+        return redirect()->route('user.index')->with('message', 'User deleted successfully!!!');
     }
 }
