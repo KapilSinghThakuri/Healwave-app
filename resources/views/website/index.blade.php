@@ -576,8 +576,7 @@
                             </div>
                             <div class="my-3">
                                 <div class="loading">Loading</div>
-                                <div class="error-message"></div>
-                                <div class="sent-message"></div>
+                                <div class="success-message"></div>
                             </div>
                             <div class="text-center">
                                 <button type="submit" id="submitBtn">Send Message</button>

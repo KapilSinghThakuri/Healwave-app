@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Website;
 
+use Exception;
 use App\Models\User;
 use App\Models\Doctor;
 use App\Models\Patient;

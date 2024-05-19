@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-    $('#user_feedback_form').on('submit',function(event){
+    $('#user_feedback_form').on('submit', function (event) {
         event.preventDefault();
 
         var formData = $(this).serialize();
@@ -18,23 +18,35 @@ $(document).ready(function () {
             method: 'POST',
             data: formData,
             beforeSend: function () {
-                submitBtn.text('Submitting..');
+                submitBtn.text('Sending...');
             },
             success: function (response) {
                 console.log(response);
-                $('.sent-message')
-                  .removeClass('alert alert-success')
-                  .html('')
-                  .addClass('alert alert-success')
-                  .text(response.message)
-                  .show();
-                setTimeout(function() {
-                    $('.sent-message').fadeOut();
+                $('.success-message')
+                    .removeClass('alert alert-danger')
+                    .html('')
+                    .addClass('alert alert-success')
+                    .text(response.message)
+                    .show();
+                setTimeout(function () {
+                    $('.success-message').fadeOut();
                 }, 3000);
-                $('$user_feedback_form input').html('');
+                $('#user_feedback_form input, #user_feedback_form textarea').val('');
+                $('#user_feedback_form input, #user_feedback_form textarea').each(function () {
+                    $(this).removeClass('is-invalid');
+                });
             },
-            error: function (xhr,error) {
+            error: function (xhr, error) {
                 console.log(error);
+                $('.success-message')
+                    .removeClass('alert alert-success')
+                    .addClass('alert alert-danger')
+                    .text('There was an error sending your message.')
+                    .show();
+                setTimeout(function () {
+                    $('.success-message').fadeOut();
+                }, 3000);
+
                 var errors = xhr.responseJSON.errors;
                 if (errors) {
                     displayErrors(errors);
@@ -45,7 +57,7 @@ $(document).ready(function () {
             }
         })
         function displayErrors(errors) {
-            $('#user_feedback_form input, #user_feedback_form textarea').each(function() {
+            $('#user_feedback_form input, #user_feedback_form textarea').each(function () {
                 $(this).removeClass('is-invalid');
                 $(this).attr('placeholder', '');
             });
