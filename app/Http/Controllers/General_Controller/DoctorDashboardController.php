@@ -21,12 +21,21 @@ class DoctorDashboardController extends Controller
 
         $currentYear = Carbon::now()->year;
 
-        $data = DB::table('appointments')
-            ->selectRaw('MONTH(created_at) as month, COUNT(DISTINCT patient_id) as patient_count') // Group by month and count distinct patients
-            ->where('doctor_id', $doctorId) // Filter by doctor ID
-            ->whereYear('created_at', $currentYear) // Filter by the current year
-            ->groupBy('month') // Group by month
-            ->orderBy('month', 'asc') // Sort by month
+        // $data = DB::table('appointments')
+        //     ->selectRaw('MONTH(created_at) as month, COUNT(DISTINCT patient_id) as patient_count') // Group by month and count distinct patients
+        //     ->where('doctor_id', $doctorId) // Filter by doctor ID
+        //     ->whereYear('created_at', $currentYear) // Filter by the current year
+        //     ->groupBy('month') // Group by month
+        //     ->orderBy('month', 'asc') // Sort by month
+        //     ->get()
+        //     ->keyBy('month');
+
+        $data = Appointment::join('schedules', 'appointments.schedule_id', '=', 'schedules.id')
+            ->selectRaw('MONTH(schedules.in) as month, COUNT(DISTINCT appointments.patient_id) as patient_count')
+            ->where('appointments.doctor_id', $doctorId)
+            ->whereYear('schedules.in', $currentYear)
+            ->groupBy('month')
+            ->orderBy('month', 'asc')
             ->get()
             ->keyBy('month');
 

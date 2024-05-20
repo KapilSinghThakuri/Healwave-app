@@ -101,9 +101,17 @@ Breadcrumbs::for('user.create', function ($trail) {
     $trail->parent('user.index');
     $trail->push('Create User', route('user.create'));
 });
+Breadcrumbs::for('usersimport.view', function ($trail) {
+    $trail->parent('user.index');
+    $trail->push('Import User', route('usersimport.view'));
+});
 Breadcrumbs::for('user.edit', function ($trail, $user) {
     $trail->parent('user.index');
     $trail->push('Edit User', route('user.edit', $user));
+});
+Breadcrumbs::for('users.trash', function ($trail) {
+    $trail->parent('user.index');
+    $trail->push('User Trash', route('users.trash'));
 });
 
 Breadcrumbs::for('role.index', function ($trail) {
@@ -160,7 +168,7 @@ Breadcrumbs::for('patient.appointment', function ($trail) {
 Breadcrumbs::for('patient.appointment.view', function ($trail, $appointment) {
     $trail->parent('doctor.dashboard');
     $trail->push('Appointments', route('patient.appointment'));
-    $trail->push('Appointment Details', route('patient.appointment.view',$appointment));
+    $trail->push('Appointment Details', route('patient.appointment.view', $appointment));
 });
 
 // Breadcrumbs For DOCTOR PATIENT
@@ -168,7 +176,3 @@ Breadcrumbs::for('patient.dashboard', function ($trail) {
     $trail->parent('doctor.dashboard');
     $trail->push('Patients', route('patient.dashboard'));
 });
-
-
-
-

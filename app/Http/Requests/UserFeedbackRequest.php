@@ -25,7 +25,8 @@ class UserFeedbackRequest extends FormRequest
     {
         return [
             'fullname' => [
-                'required','string'
+                'required',
+                'string',
             ],
             'email' => [
                 'email',

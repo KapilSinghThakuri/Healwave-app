@@ -28,7 +28,8 @@
                     <a href="{{ route('schedule.index') }}"><i class="fa fa-calendar-check-o"></i> <span>Doctor
                             Schedule</span></a>
                 </li>
-                <li class="{{ request()->routeIs('user.*') ? 'active' : '' }} ">
+                <li
+                    class="{{ request()->routeIs('user.*') || request()->routeIs('users.trash') || request()->routeIs('usersimport.view') ? 'active' : '' }} ">
                     <a href="{{ route('user.index') }}"><i class="fa fa-users"
                             aria-hidden="true"></i><span>Users</span></a>
                 </li>

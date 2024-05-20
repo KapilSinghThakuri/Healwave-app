@@ -32,6 +32,7 @@ use App\Http\Controllers\Website\GeneralDashboardController;
 use App\Http\Controllers\Website\ServiceController;
 use App\Http\Controllers\Website\WebsiteDepartmentController;
 use App\Http\Controllers\Website\WebsiteGalleryController;
+use Maatwebsite\Excel\Row;
 
 Route::get('/', function () {
     return view('welcome');
@@ -84,7 +85,12 @@ Route::prefix('Healwave/admin')->group(function () {
             'menu' => MenuController::class,
             'websiteinfo' => WebsiteInfoController::class,
         ]);
-        Route::get('users/export/', [UserController::class, 'userExport'])->name('users.export');
+        Route::get('users/trash', [UserController::class, 'usersTrash'])->name('users.trash');
+        Route::get('user/trash/{user}', [UserController::class, 'userRestore'])->name('user.restore');
+        Route::delete('user/permanent-delete/{user}', [UserController::class, 'userPermanentDelete'])->name('user.permanentDelete');
+        Route::get('users/export/', [UserController::class, 'usersExport'])->name('users.export');
+        Route::get('users/import/', [UserController::class, 'usersImportView'])->name('usersimport.view');
+        Route::post('users/import/', [UserController::class, 'usersImport'])->name('users.import');
 
         Route::PATCH('StatusUpdate/{menuId}', [MenuController::class, 'MenuStatusUpdate'])->name('menu.StatusUpdate');
 

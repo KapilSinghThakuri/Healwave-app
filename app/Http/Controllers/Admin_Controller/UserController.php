@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Admin_Controller;
 
+use Exception;
 use App\Models\User;
 use App\Exports\UsersExport;
+use App\Imports\UsersImport;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\DB;
@@ -33,9 +35,48 @@ class UserController extends Controller
         return view('admin_Panel.user.users', compact('users'));
     }
 
-    public function userExport()
+    public function usersExport()
     {
         return Excel::download(new UsersExport, 'users.xlsx');
+    }
+
+    public function usersImportView()
+    {
+        return view('admin_Panel.user.import-users');
+    }
+
+    public function usersImport(Request $request)
+    {
+        $request->validate([
+            'excelfile' => ['file', 'mimes:xlsx'],
+        ]);
+        Excel::import(new UsersImport, $request->file('excelfile'));
+        return redirect()->route('user.index')
+            ->with('message', 'Excel data has been imported successfully!');
+    }
+
+    public function usersTrash()
+    {
+        $softDeletedUsers = User::onlyTrashed()->get();
+        return view('admin_Panel.user.users-trash', compact('softDeletedUsers'));
+    }
+    public function userRestore($userId)
+    {
+        $softDeletedUser = User::onlyTrashed()->find($userId);
+        if ($softDeletedUser) {
+            $softDeletedUser->restore();
+        }
+        return redirect()->route('user.index')
+            ->with('message', 'User restored successfully!');
+    }
+    public function userPermanentDelete($userId)
+    {
+        $softDeletedUser = User::onlyTrashed()->find($userId);
+        if ($softDeletedUser) {
+            $softDeletedUser->forceDelete();
+        }
+        return redirect()->route('users.trash')
+            ->with('message', 'User permanently deleted successfully!');
     }
     /**
      * Show the form for creating a new resource.
