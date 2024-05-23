@@ -107,7 +107,7 @@
                         </div>
                         @if($appointments->count() >= 5)
                         <div class="card-footer text-center bg-white">
-                            <a href="doctors.html" class="text-muted">View all Appointments</a>
+                            <a href="{{ route('patient.appointment')}}" class="text-muted">View all Appointments</a>
                         </div>
                         @endif
                     </div>

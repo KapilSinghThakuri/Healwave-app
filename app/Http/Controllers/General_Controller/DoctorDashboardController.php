@@ -82,7 +82,6 @@ class DoctorDashboardController extends Controller
                 'pendingAppointmentsCount',
                 'approvedAppointmentsCount',
                 'cancelledAppointmentsCount',
-
                 'labels',
                 'patientCounts'
             )

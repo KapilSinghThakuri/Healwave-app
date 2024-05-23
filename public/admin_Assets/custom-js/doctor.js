@@ -1,5 +1,3 @@
-////////////////////////////            ADD DOCTOR JavaScript Code         //////////////////////////
-
 ////////////////////////////            For Profile Load         ////////////////////////////////
 var loadFile = function (event) {
     var image = document.getElementById('placeholder_image');
@@ -83,7 +81,6 @@ function tempAddress() {
                 tempMunicipalityId = newId;
             }
         });
-        // console.log(tempProvinceId);
 
         // Get districts based on province for newly cloned div
         $("#" + tempProvinceId).on('change', function () {
@@ -95,12 +92,10 @@ function tempAddress() {
                     type: 'GET',
                     dataType: 'json',
                     success: function (response) {
-                        // console.log(response);
                         var districtSelect = $('#' + tempDistrictId);
                         districtSelect.empty().append('<option selected> Select your district </option>');
 
                         response.forEach(function (district) {
-                            // console.log(district);
                             districtSelect.append('<option value="' + district.district_code + '">' + district['district_name[nep]'] + '</option>');
                         });
                     },
@@ -122,11 +117,9 @@ function tempAddress() {
                     type: 'GET',
                     dataType: 'json',
                     success: function (response) {
-                        // console.log(response);
                         var municipalitySelect = $('#' + tempMunicipalityId);
                         municipalitySelect.empty().append('<option selected> Select your municipality </option>');
                         response.forEach(function (municipality) {
-                            // console.log(municipality);
                             municipalitySelect.append('<option value="' + municipality.municipality_code + '">' + municipality['municipality_name[nep]'] + '</option>');
                         });
                     },
@@ -338,12 +331,20 @@ $(document).ready(function () {
     function checkEmptyFieldStep1() {
         var emptyFieldErrors = [];
 
-        if ($('#first_name').val().trim() === '') {
+        var firstName = $('#first_name').val().trim();
+        if (firstName === '') {
             emptyFieldErrors.push('First Name is required');
+        } else if (firstName.length < 3) {
+            emptyFieldErrors.push('First Name must be at least 3 characters');
         }
-        if ($('#last_name').val().trim() === '') {
+
+        var lastName = $('#last_name').val().trim();
+        if (lastName === '') {
             emptyFieldErrors.push('Last Name is required');
+        } else if (lastName.length < 3) {
+            emptyFieldErrors.push('Last Name must be at least 3 characters');
         }
+
         if (!$('#male').is(':checked') && !$('#female').is(':checked')) {
             emptyFieldErrors.push('Gender is required');
         }
@@ -353,12 +354,21 @@ $(document).ready(function () {
         if ($('#date_of_birth_AD').val().trim() === '') {
             emptyFieldErrors.push('Date of Birth[AD] is required');
         }
-        if ($('#phone').val().trim() === '') {
+        
+        var phone = $('#phone').val().trim();
+        if (phone === '') {
             emptyFieldErrors.push('Phone is required');
+        } else if (!/^\d{10}$/.test(phone)) {
+            emptyFieldErrors.push('Phone must be a valid 10-digit number');
         }
-        if ($('#license_no').val().trim() === '') {
+
+        var licenseNo = $('#license_no').val().trim();
+        if (licenseNo === '') {
             emptyFieldErrors.push('License Number is required');
+        } else if (!/^\d{6}$/.test(licenseNo)) {
+            emptyFieldErrors.push('License Number must be a valid 6-digit number');
         }
+
         if ($('#department_id').val().trim() === '') {
             emptyFieldErrors.push('Department is required');
         }
@@ -485,8 +495,11 @@ $(document).ready(function () {
         if ($('#graduation_year_AD').val().trim() === '') {
             emptyFieldErrors.push('Graduation Year[AD] is required');
         }
-        if ($('#specialization').val().trim() === '') {
+        var specialization = $('#specialization').val().trim();
+        if (specialization === '') {
             emptyFieldErrors.push('Specialization is required');
+        } else if (specialization.length < 3) {
+            emptyFieldErrors.push('Specialization must be at least 3 characters');
         }
 
         console.log(emptyFieldErrors);
@@ -518,25 +531,46 @@ $(document).ready(function () {
     function checkEmptyFieldStep4() {
         var emptyFieldErrors = [];
 
-        if ($('#org_name').val().trim() === '') {
+        var orgName = $('#org_name').val().trim();
+        if (orgName === '') {
             emptyFieldErrors.push('Organization Name is required');
-        }
-        if ($('#start_date_BS').val().trim() === '') {
-            emptyFieldErrors.push('Start Date[BS] is required');
-        }
-        if ($('#start_date_AD').val().trim() === '') {
-            emptyFieldErrors.push('Start Date[AD] is required');
-        }
-        if ($('#end_date_BS').val().trim() === '') {
-            emptyFieldErrors.push('End Date[BS] is required');
-        }
-        if ($('#end_date_AD').val().trim() === '') {
-            emptyFieldErrors.push('End Date[AD] is required');
+        } else if (orgName.length < 3) {
+            emptyFieldErrors.push('Organization Name must be at least 3 characters');
         }
 
-        console.log($('#job_description').val());
-        if ($('#job_description').val().trim() === '') {
+        var startDateBS = $('#start_date_BS').val().trim();
+        if (startDateBS === '') {
+            emptyFieldErrors.push('Start Date[BS] is required');
+        } else if (!/^\d{4}-\d{2}-\d{2}$/.test(startDateBS)) {
+            emptyFieldErrors.push('Start Date[BS] must be in YYYY/MM/DD format');
+        }
+        
+        var startDateAD = $('#start_date_AD').val().trim();
+        if (startDateAD === '') {
+            emptyFieldErrors.push('Start Date[AD] is required');
+        } else if (!/^\d{4}-\d{2}-\d{2}$/.test(startDateAD)) {
+            emptyFieldErrors.push('Start Date[AD] must be in YYYY-MM-DD format');
+        }
+        
+        var endDateBS = $('#end_date_BS').val().trim();
+        if (endDateBS === '') {
+            emptyFieldErrors.push('End Date[BS] is required');
+        } else if (!/^\d{4}-\d{2}-\d{2}$/.test(endDateBS)) {
+            emptyFieldErrors.push('End Date[BS] must be in YYYY/MM/DD format');
+        }
+        
+        var endDateAD = $('#end_date_AD').val().trim();
+        if (endDateAD === '') {
+            emptyFieldErrors.push('End Date[AD] is required');
+        } else if (!/^\d{4}-\d{2}-\d{2}$/.test(endDateAD)) {
+            emptyFieldErrors.push('End Date[AD] must be in YYYY-MM-DD format');
+        }
+
+        var jobDescription = $('#job_description').val().trim();
+        if (jobDescription === '') {
             emptyFieldErrors.push('Job Description is required');
+        } else if (jobDescription.length < 10) {
+            emptyFieldErrors.push('Job Description must be at least 10 characters');
         }
 
         console.log(emptyFieldErrors);
@@ -568,14 +602,27 @@ $(document).ready(function () {
     function checkEmptyFieldStep5() {
         var emptyFieldErrors = [];
 
-        if ($('#email').val().trim() === '') {
+        var email = $('#email').val().trim();
+        if (email === '') {
             emptyFieldErrors.push('Email is required');
+        } else if (!isValidEmail(email)) {
+            emptyFieldErrors.push('Email must be a valid email address');
         }
-        if ($('#password').val().trim() === '') {
+
+        var password = $('#password').val().trim();
+        console.log(password);
+        if (password === '') {
             emptyFieldErrors.push('Password is required');
+        } else if (password.length < 6) {
+            emptyFieldErrors.push('Password must be at least 6 characters');
         }
-        if ($('#password_confirmation').val().trim() === '') {
+
+        var passwordConfirmation = $('#password_confirmation').val().trim();
+        console.log(passwordConfirmation);
+        if (passwordConfirmation === '') {
             emptyFieldErrors.push('Confirm Password is required');
+        } else if (password !== passwordConfirmation) {
+            emptyFieldErrors.push('Passwords do not match');
         }
 
         console.log(emptyFieldErrors);
@@ -592,6 +639,11 @@ $(document).ready(function () {
             return true;
         }
     };
+    // Function to validate email format
+    function isValidEmail(email) {
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
     $(".createDoctor").click(function () {
         if (!checkEmptyFieldStep5()) {
             event.preventDefault();
@@ -717,4 +769,34 @@ $(document).ready(function () {
             }
         })
     })
+
+    $('#email').on('blur', function () {
+        var email = $(this).val().trim();
+        console.log(email);
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        if (email !== '') {
+            $.ajax({
+                url: '/Healwave/admin/validate-email',
+                type: 'POST',
+                data: {
+                    email: email
+                },
+                success: function (response) {
+                    console.log(response.exists);
+                    if (response.exists) {
+                        $('#emailError').html('<span class="text-danger">Email already exists</span>');
+                        $('#submitBtn').prop('disabled', true);
+                    } else {
+                        $('#emailError').html('');
+                        $('#submitBtn').prop('disabled', false);
+                    }
+                }
+            });
+        }
+    });
 })

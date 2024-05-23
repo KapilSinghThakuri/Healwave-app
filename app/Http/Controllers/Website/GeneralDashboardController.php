@@ -135,14 +135,16 @@ class GeneralDashboardController extends Controller
 
             $validatedData['patient_id'] = $patient->id;
             $validatedData['status'] = 'pending';
-
             $appointment = Appointment::create($validatedData);
 
             $users = User::role(['Super Admin', 'Administrator'])->get();
             foreach ($users as $user) {
                 $user->notify(new AppointmentNotification($appointment, $patient, 'appointment_create'));
             }
-            $patient->notify(new AppointmentNotification($appointment, $patient, 'appointment_create'));
+            $schedule = $this->schedule->where('id', $validatedData['schedule_id'])->first();
+            $doctor = $schedule->doctor;
+            $doctor->notify(new AppointmentNotification($appointment, $doctor, 'appointment_create'));
+            $patient->notify(new AppointmentNotification($appointment, $patient, 'appointment_create')); 
 
             DB::commit();
             return redirect()->route('general.dashboard')->with('message', 'Your Appointment Send Successfully !!!');

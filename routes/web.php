@@ -1,38 +1,39 @@
 <?php
 
+use Maatwebsite\Excel\Row;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin_Controller\LoginController;
-use App\Http\Controllers\Admin_Controller\RegisterController;
-use App\Http\Controllers\Admin_Controller\DashboardController;
-use App\Http\Controllers\Admin_Controller\DoctorController;
-use App\Http\Controllers\Admin_Controller\DepartmentController;
-use App\Http\Controllers\Admin_Controller\AppointmentController;
-use App\Http\Controllers\Admin_Controller\DoctorScheduleController;
-use App\Http\Controllers\Admin_Controller\PatientController;
-use App\Http\Controllers\Admin_Controller\NotificationController;
-use App\Http\Controllers\Admin_Controller\AccountSettingController;
-use App\Http\Controllers\Admin_Controller\RoleController;
-use App\Http\Controllers\Admin_Controller\UserController;
-use App\Http\Controllers\Admin_Controller\PageController;
-use App\Http\Controllers\Admin_Controller\FeedbackController;
-use App\Http\Controllers\Admin_Controller\FAQController;
-use App\Http\Controllers\Admin_Controller\AlbumsController;
-use App\Http\Controllers\Admin_Controller\GalleryController;
-use App\Http\Controllers\Admin_Controller\BannerController;
-use App\Http\Controllers\Admin_Controller\MenuController;
-use App\Http\Controllers\Admin_Controller\WebsiteInfoController;
-
-use App\Http\Controllers\General_Controller\DoctorDashboardController;
-use App\Http\Controllers\General_Controller\ProfileController;
-use App\Http\Controllers\General_Controller\ScheduleController;
-use App\Http\Controllers\General_Controller\PatientAppointmentController;
 use App\Http\Controllers\Website\AboutUsController;
 use App\Http\Controllers\Website\ContactController;
-use App\Http\Controllers\Website\GeneralDashboardController;
 use App\Http\Controllers\Website\ServiceController;
-use App\Http\Controllers\Website\WebsiteDepartmentController;
+use App\Http\Controllers\Website\FeedbackController;
+use App\Http\Controllers\Admin_Controller\FAQController;
+use App\Http\Controllers\Admin_Controller\MenuController;
+use App\Http\Controllers\Admin_Controller\PageController;
+use App\Http\Controllers\Admin_Controller\RoleController;
+use App\Http\Controllers\Admin_Controller\UserController;
+use App\Http\Controllers\Admin_Controller\LoginController;
 use App\Http\Controllers\Website\WebsiteGalleryController;
-use Maatwebsite\Excel\Row;
+use App\Http\Controllers\Admin_Controller\AlbumsController;
+use App\Http\Controllers\Admin_Controller\BannerController;
+use App\Http\Controllers\Admin_Controller\DoctorController;
+use App\Http\Controllers\Admin_Controller\GalleryController;
+use App\Http\Controllers\Admin_Controller\PatientController;
+use App\Http\Controllers\Website\GeneralDashboardController;
+use App\Http\Controllers\Admin_Controller\RegisterController;
+use App\Http\Controllers\Website\WebsiteDepartmentController;
+
+use App\Http\Controllers\Admin_Controller\DashboardController;
+use App\Http\Controllers\General_Controller\ProfileController;
+use App\Http\Controllers\Admin_Controller\DepartmentController;
+use App\Http\Controllers\General_Controller\ScheduleController;
+use App\Http\Controllers\Admin_Controller\AppointmentController;
+use App\Http\Controllers\Admin_Controller\WebsiteInfoController;
+use App\Http\Controllers\Admin_Controller\NotificationController;
+use App\Http\Controllers\Admin_Controller\AccountSettingController;
+use App\Http\Controllers\Admin_Controller\DoctorScheduleController;
+use App\Http\Controllers\General_Controller\DoctorDashboardController;
+use App\Http\Controllers\General_Controller\DoctorNotificationController;
+use App\Http\Controllers\General_Controller\PatientAppointmentController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -94,7 +95,10 @@ Route::prefix('Healwave/admin')->group(function () {
 
         Route::PATCH('StatusUpdate/{menuId}', [MenuController::class, 'MenuStatusUpdate'])->name('menu.StatusUpdate');
 
-        Route::resource('feedback', FeedbackController::class)->only(['index', 'store', 'show']);
+       
+        
+
+        Route::post('/validate-email', [DoctorController::class, 'validateEmail'])->name('validate.email');
 
         Route::get('/trash', [DoctorController::class, 'doctorTrash'])->name('doctor.trash');
         Route::get('/trash/{doctor}', [DoctorController::class, 'doctorRestore'])->name('doctor.restore');
@@ -158,6 +162,13 @@ Route::prefix('Healwave')->group(function () {
         Route::get('doctor/appointment/view/{appointment}', [PatientAppointmentController::class, 'show'])->name('patient.appointment.view');
         Route::get('appointment/exportpdf/{appointment}', [PatientAppointmentController::class, 'generateAppointmentPdf'])->name('appointment.exportpdf');
         Route::get('doctor/patients', [PatientAppointmentController::class, 'patientsIndex'])->name('patient.dashboard');
+
+        Route::get('doctor/mark-all-as-read', [DoctorNotificationController::class, 'doctorNotificationMarkAllAsRead'])
+        ->name('notifications.doctorNotificationMarkAllAsRead');
+        Route::get('doctor/notifications/mark-as-read/{notificationId}', [DoctorNotificationController::class, 'doctorNotificationMarkAsRead'])
+        ->name('notifications.doctorNotificationMarkAsRead');
+        Route::get('doctor/notifications/unreadNotificationsCount', [DoctorNotificationController::class, 'doctorUnreadNotificationsCount'])
+        ->name('notifications.doctorUnreadNotificationsCount');
     });
 
     // Website Routing
@@ -170,6 +181,7 @@ Route::prefix('Healwave')->group(function () {
         // test
         Route::get('/available/{doctorId}', 'getAvailableDays');
     });
+    Route::resource('/user/feedback', FeedbackController::class)->only(['index', 'store', 'show']);
 
     Route::get('department', [WebsiteDepartmentController::class, 'index'])->name('website.department');
     Route::get('gallery', [WebsiteGalleryController::class, 'index'])->name('website.gallery');
@@ -177,3 +189,4 @@ Route::prefix('Healwave')->group(function () {
     Route::get('contact', [ContactController::class, 'index'])->name('website.contact');
     Route::get('services', [ServiceController::class, 'index'])->name('website.service');
 });
+

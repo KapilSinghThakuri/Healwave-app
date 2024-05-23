@@ -489,11 +489,12 @@
                                         <label>Email <span class="text-danger">*</span></label>
                                         <input id="email" name="email" class="form-control"
                                             value="{{ old('email') }}" type="email">
+                                            <div class="text-danger" id="emailError"></div>
                                         @error('email')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
-                                </div>
+                                </div> 
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Password <span class="text-danger">*</span></label>
@@ -518,7 +519,7 @@
                             <div class="m-t-20 d-flex justify-content-between">
                                 <button type="button" class="btn btn-outline-primary mr-auto btn-lg prevBtn"
                                     style="width: 130px; height: 45px;  letter-spacing: 2px; font-size: 1.15rem;">Previous</button>
-                                <button type="submit" class="createDoctor btn btn-primary ml-auto btn-lg"
+                                <button type="submit" class="createDoctor btn btn-primary ml-auto btn-lg" id="submitBtn"
                                     style="width: 180px;  height: 45px; letter-spacing: 2px; font-size: 1.15rem;">Create
                                     Doctor</button>
                             </div>

@@ -602,7 +602,7 @@
                             <div class="text-center">
                                 <button type="submit" id="submitBtn">Send Message</button>
                             </div>
-                        </form>
+                        </form> 
 
                     </div>
 

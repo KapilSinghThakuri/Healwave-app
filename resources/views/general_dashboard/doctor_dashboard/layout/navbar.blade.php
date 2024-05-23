@@ -11,7 +11,75 @@
                     class="fa fa-bars"></i></a>
             <a id="mobile_btn" class="mobile_btn float-left" href="#sidebar" title="Hide Sidebar"
                 data-toggle="tooltip"><i class="fa fa-bars"></i></a>
-            <ul class="nav user-menu float-right">
+
+            <ul class="nav user-menu float-right"> 
+
+                <!-- Notifications - Message Box -->
+                <li class="nav-item dropdown d-none d-sm-block">
+                    <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" title="Notifications">
+                        <i class="fa fa-bell-o"></i>
+                        <span id="unreadNotificationsCount" class="badge badge-pill bg-danger float-right">
+                            0
+                        </span>
+                    </a>
+
+                    <div class="dropdown-menu notifications">
+                        <div class="topnav-dropdown-header">
+                            <span>Notifications</span>
+                        </div>
+                        <div class="drop-scroll">
+                            <ul class="notification-list">
+                                @foreach ($doctorNotifications as $notification)
+                                    <li class="notification-message">
+                                        <a href="#">
+                                            <div class="media">
+                                                <div class="checkbox-container">
+                                                    <input type="checkbox" name="notification_id"
+                                                        value="{{ $notification->id }}" class="notification-checkbox"
+                                                        data-notification-id="{{ $notification->id }}"
+                                                        title="Mark as Read" data-toggle="tooltip">
+                                                </div>
+                                                <div class="media-body">
+                                                    <p class="noti-details">
+                                                        <span class="noti-title">
+                                                            @switch($notification->data['method'])
+                                                                @case('schedule_update')
+                                                                    <strong style="color: #3498db; font-weight: 400;">
+                                                                        {{ $notification->data['doctor_name'] }}</strong> has
+                                                                    updated their appointment schedule.
+                                                                @break
+                                                                @case('appointment_create')
+                                                                    <strong style="color: #3498db; font-weight: 400;">New
+                                                                        appointment alert:</strong> <span
+                                                                        class="noti-title">{{ $notification->data['patient_name'] }}</span>
+                                                                    has booked the schedule for
+                                                                    {{ $notification->data['appointment_time_interval'] }}.
+                                                                @break
+                                                                @default
+                                                                    <strong style="color: #3498db; font-weight: 400;">Notice:
+                                                                    </strong> <span class="noti-title"> No new
+                                                                        notifications.</span>
+                                                            @endswitch
+                                                        </span>
+                                                    </p>
+                                                    <p class="noti-time"><span
+                                                            class="notification-time">{{ $notification->created_at->diffForHumans() }}</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        @if (count($adminNotifications) >= 1)
+                            <div class="topnav-dropdown-footer">
+                                <a href="#" id="mark-all-read">Mark as Read All</a>
+                            </div>
+                        @endif
+                    </div>
+                </li>
+
                 <li class="nav-item dropdown has-arrow">
                     <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
                         <span class="user-img">
@@ -31,9 +99,6 @@
                         @endif
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="">My Profile</a>
-                        <a class="dropdown-item" href="">Edit Profile</a>
-                        <a class="dropdown-item" href="">Settings</a>
                         <a class="dropdown-item" href="{{ route('doctor.logout') }}">Logout</a>
                     </div>
                 </li>

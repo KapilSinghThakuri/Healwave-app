@@ -48,6 +48,60 @@
         $(function () {
             $('[data-toggle="tooltip"]').tooltip();
         });
+
+        $(document).ready(function() {
+
+            $('#mark-all-read').on('click', function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: '/Healwave/doctor/mark-all-as-read',
+                    method: 'GET',
+                    success: function(response) {
+                        console.log('Doctor' + response.success);
+                        $('.notification-list').empty();
+                        notificationCount();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            });
+
+            $('.notification-checkbox').change(function() {
+                var notificationId = $(this).data('notification-id');
+                console.log('Doctor' + notificationId);
+                var listItem = $(this).closest('.notification-message');
+
+                $.ajax({
+                    url: '/Healwave/doctor/notifications/mark-as-read/' + notificationId,
+                    method: 'GET',
+                    success: function(response) {
+                        console.log(response.message);
+                        listItem.remove();
+                        notificationCount();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('There was a problem with the request:', error);
+                    }
+                });
+            });
+
+            function notificationCount() {
+                $.ajax({
+                    url: '/Healwave/doctor/notifications/unreadNotificationsCount',
+                    method: 'GET',
+                    success: function(response) {
+                        console.log(response);
+                        $('#unreadNotificationsCount').text(response.unreadNotificationsCount);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                })
+            }
+            notificationCount();
+        });
     </script>
 </body>
 </html>

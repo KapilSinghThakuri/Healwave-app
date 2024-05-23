@@ -14,7 +14,7 @@ class AppointmentNotification extends Notification implements ShouldQueue
     public $method;
 
     /**
-     * Create a new notification instance.
+     * Create a new notification instance. 
      *
      * @return void
      */

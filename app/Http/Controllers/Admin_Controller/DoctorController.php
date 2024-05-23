@@ -71,6 +71,14 @@ class DoctorController extends Controller
         return response()->json($municipalities);
     }
 
+    public function validateEmail(Request $request) {
+        $email = $request->input('email');
+
+        $exists = User::where('email', $email)->exists();
+
+        return response()->json(['exists' => $exists]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

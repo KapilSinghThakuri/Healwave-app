@@ -1,4 +1,7 @@
 $(document).ready(function () {
+    $('#user_feedback_form input, #user_feedback_form textarea').each(function () {
+        $(this).attr('data-original-placeholder', $(this).attr('placeholder'));
+    });
 
     $('#user_feedback_form').on('submit', function (event) {
         event.preventDefault();
@@ -14,14 +17,14 @@ $(document).ready(function () {
         });
 
         $.ajax({
-            url: '/Healwave/admin/feedback',
+            url: '/Healwave/user/feedback',
             method: 'POST',
             data: formData,
             beforeSend: function () {
                 submitBtn.text('Sending...');
             },
             success: function (response) {
-                console.log(response);
+                console.log('success' + response); 
                 $('.success-message')
                     .removeClass('alert alert-danger')
                     .html('')
@@ -31,13 +34,14 @@ $(document).ready(function () {
                 setTimeout(function () {
                     $('.success-message').fadeOut();
                 }, 3000);
-                $('#user_feedback_form input, #user_feedback_form textarea').val('');
-                $('#user_feedback_form input, #user_feedback_form textarea').each(function () {
-                    $(this).removeClass('is-invalid');
+
+                $('#user_feedback_form input, #user_feedback_form textarea').val('').each(function () {
+                    $(this).attr('placeholder', $(this).attr('data-original-placeholder'));
                 });
+                $('#user_feedback_form input, #user_feedback_form textarea').removeClass('is-invalid');
             },
-            error: function (xhr, error) {
-                console.log(error);
+            error: function (xhr, status, error) {
+                console.log('error' + error);
                 $('.success-message')
                     .removeClass('alert alert-success')
                     .addClass('alert alert-danger')
@@ -47,9 +51,11 @@ $(document).ready(function () {
                     $('.success-message').fadeOut();
                 }, 3000);
 
-                var errors = xhr.responseJSON.errors;
-                if (errors) {
+                if (xhr.responseJSON && xhr.responseJSON.errors) {
+                    var errors = xhr.responseJSON.errors;
                     displayErrors(errors);
+                } else {
+                    console.log("Unexpected error format:", xhr.responseText);
                 }
             },
             complete: function () {
