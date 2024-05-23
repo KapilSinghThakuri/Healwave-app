@@ -190,3 +190,46 @@
   padding: 1px 10px;
   text-align: center;
   }
+
+.schedule-badge{
+  padding: 5px 10px;
+  margin: 5px;
+  font-size: 13px;
+  background-color: #e5f0fa;
+  color: #0080ff;
+  border: 1px solid #0080ff;
+  border-radius: 5px;
+  cursor: pointer;
+  user-select: none;
+  display: inline-block;
+}
+.hidden-radio {
+  display: none;
+}
+.hidden-radio:checked+.schedule-badge {
+  background-color: #e5faf3;
+  border: 1px solid #00ce7c;
+  color: #00ce7c;
+}
+
+.schedule-badge-disabled { 
+  padding: 5px 10px;
+  margin: 5px;
+  font-size: 13px;
+  background-color: #ddd;
+  border: 1px solid #818181;
+  color: #818181;
+  border-radius: 5px;
+  cursor: pointer;
+  user-select: none;
+  display: inline-block;
+}
+
+
+.select-schedule-message {
+  display: none;
+  font-size: 13px;
+  font-weight: 400;
+  color: red !important;
+  margin-top: 0;
+}

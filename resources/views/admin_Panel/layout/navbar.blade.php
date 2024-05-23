@@ -38,6 +38,7 @@
                                                         data-notification-id="{{ $notification->id }}"
                                                         title="Mark as Read" data-toggle="tooltip">
                                                 </div>
+                                                
                                                 @if ($notification->data['method'] === 'doctor_create' && 'schedule_create' && 'schedule_update' && 'schedule_delete')
                                                     <span class="avatar">
                                                         <img alt="John Doe"

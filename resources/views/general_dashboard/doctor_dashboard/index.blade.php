@@ -55,7 +55,6 @@
                                             <th>Patient Name</th>
                                             <th>Date</th>
                                             <th>Timing</th>
-                                            <th class="text-right">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -72,31 +71,6 @@
                                             <td>
                                                 <h5 class="time-title p-0">Timing</h5>
                                                 <p>{{ $appointment->time_interval }}</p>
-                                            </td>
-                                            <td class="text-right">
-                                                @if($appointment->status == 'pending')
-                                                <div class="dropdown">
-                                                    <button class="btn btn-outline-primary dropdown-toggle" type="button" id="approvalDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        Action
-                                                    </button>
-                                                    <div class="dropdown-menu" aria-labelledby="approvalDropdown">
-                                                        <form action="{{ route('doctor.appointment-approve',['appointment'=>$appointment->id ])}}" method="POST">
-                                                            @csrf
-                                                            @method('PATCH')
-                                                            <button type="submit" class="dropdown-item">Approved</button>
-                                                        </form>
-                                                        <form action="{{ route('doctor.appointment-cancel',['appointment'=>$appointment->id ])}}" method="POST">
-                                                            @csrf
-                                                            @method('PATCH')
-                                                            <button type="submit" class="dropdown-item">Cancel</button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                                @elseif($appointment->status == 'approved')
-                                                <span class="custom-badge status-green">Approved</span>
-                                                @else
-                                                <span class="custom-badge status-red">Cancelled</span>
-                                                @endif
                                             </td>
                                         </tr>
                                         @endforeach

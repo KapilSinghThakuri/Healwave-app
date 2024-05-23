@@ -26,10 +26,14 @@
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
     integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+{{-- Select 2 cdn --}}
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 @stack('scripts')
 
 <script type="text/javascript">
+    $('.mutiple-value-select').select2();
+
     @if (Session::has('message'))
         toastr.options = {
             "closeButton": true,

@@ -108,7 +108,7 @@
                                                 <td>{{ $patient->age }} years</td>
                                                 <td>{{ $patient->permanent_address }}</td>
                                                 <td>{{ $patient->phone }}</td>
-                                                <td>{{ $patient->appointment->reason }}</td>
+                                                <td>{{ $patient->appointment ? $patient->appointment->reason : ' - ' }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>

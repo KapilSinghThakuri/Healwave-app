@@ -7,6 +7,10 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
+    protected $commands = [
+        Commands\ResetDoctorScheduleStatus::class,
+    ];
+    
     /**
      * Define the application's command schedule.
      *
@@ -15,6 +19,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('schedule:reset-status')->weekly()->saturdays()->at('00:00');
         // $schedule->command('inspire')->hourly();
     }
 

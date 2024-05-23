@@ -152,6 +152,7 @@ Route::prefix('Healwave')->group(function () {
         });
 
         Route::resource('doctor/my-schedule', ScheduleController::class);
+        Route::patch('doctor/my_schedule/update_status/{schedule}', [ScheduleController::class, 'updateStatus'])->name('schedule.updateStatus');
 
         Route::get('doctor/appointment', [PatientAppointmentController::class, 'index'])->name('patient.appointment');
         Route::get('doctor/appointment/view/{appointment}', [PatientAppointmentController::class, 'show'])->name('patient.appointment.view');
@@ -161,10 +162,13 @@ Route::prefix('Healwave')->group(function () {
 
     // Website Routing
     Route::controller(GeneralDashboardController::class)->group(function () {
-        Route::get('dashboard/', 'index')->name('general.dashboard');
-        Route::get('dashboard/appointment-form/{schedule}/{interval}', 'appointment')->name('appointment.create');
-        Route::post('dashboard/appointment-form/store/{scheduleId}', 'appointmentStore')->name('appointment.store');
+        Route::get('/dashboard', 'index')->name('general.dashboard');
+        Route::get('dashboard/appointment_form/{doctorId}', 'appointment')->name('appointment.create');
+        Route::post('dashboard/appointment_form/store', 'appointmentStore')->name('appointment.store');
         Route::get('/language/change/{lang}', 'changeLanguage')->name('lang.change');
+
+        // test
+        Route::get('/available/{doctorId}', 'getAvailableDays');
     });
 
     Route::get('department', [WebsiteDepartmentController::class, 'index'])->name('website.department');

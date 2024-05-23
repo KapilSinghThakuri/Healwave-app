@@ -16,8 +16,8 @@ class DoctorScheduleController extends Controller
     public function __construct()
     {
         $this->middleware('permission:view schedule', ['only' => ['index']]);
-        $this->middleware('permission:create schedule', ['only' => ['create','store']]);
-        $this->middleware('permission:edit schedule', ['only' => ['edit','update']]);
+        $this->middleware('permission:create schedule', ['only' => ['create', 'store']]);
+        $this->middleware('permission:edit schedule', ['only' => ['edit', 'update']]);
         $this->middleware('permission:delete schedule', ['only' => ['destroy']]);
     }
 
@@ -28,12 +28,10 @@ class DoctorScheduleController extends Controller
      */
     public function index()
     {
-        // $scheduleInterval = Schedule::find(1);
-        // dd($scheduleInterval->time_intervals);
-        $schedules = Schedule::with('appointment')->orderBy('created_at','desc')->simplePaginate(10);
+        $schedules = Schedule::with('appointments')->orderBy('created_at', 'desc')->simplePaginate(5);
         $schedules->withPath('');
         $appointments = Appointment::get();
-        return view('admin_Panel.doctor_schedule.schedule',compact('schedules','appointments'));
+        return view('admin_Panel.doctor_schedule.schedule', compact('schedules', 'appointments'));
     }
 
     /**
@@ -44,7 +42,7 @@ class DoctorScheduleController extends Controller
     public function create()
     {
         $doctors = Doctor::all();
-        return view('admin_Panel.doctor_schedule.add-schedule',compact('doctors'));
+        return view('admin_Panel.doctor_schedule.add-schedule', compact('doctors'));
     }
 
     /**
@@ -56,8 +54,20 @@ class DoctorScheduleController extends Controller
     public function store(DoctorScheduleRequest $request)
     {
         $validatedData = $request->validated();
-        Schedule::create($validatedData);
-        return redirect()->route('schedule.index')->with('message','Doctor Schedule has been set successfully !!!');
+        if (isset($validatedData['days'])) {
+            foreach ($validatedData['days'] as $key => $day) {
+                Schedule::create([
+                    'doctor_id' => $validatedData['doctor_id'],
+                    'days' => $validatedData['days'][$key],
+                    'from' => $validatedData['from'],
+                    'to' => $validatedData['to'],
+                    'status' => $validatedData['status'],
+                    'total_quota' => $validatedData['total_quota'],
+                ]);
+            }
+        }
+
+        return redirect()->route('schedule.index')->with('message', 'Doctor Schedule has been set successfully !!!');
     }
 
     /**
@@ -81,7 +91,7 @@ class DoctorScheduleController extends Controller
     {
         $doctors = Doctor::all();
         $schedule = Schedule::findOrFail($id);
-        return view('admin_Panel.doctor_schedule.edit-schedule',compact('schedule','doctors'));
+        return view('admin_Panel.doctor_schedule.edit-schedule', compact('schedule', 'doctors'));
     }
 
     /**
@@ -94,8 +104,13 @@ class DoctorScheduleController extends Controller
     public function update(DoctorScheduleRequest $request, $id)
     {
         $validatedData = $request->validated();
-        Schedule::where('id', $id)->update($validatedData);
-        return redirect()->route('schedule.index')->with('message','Doctor Schedule has been updated successfully!!!');
+
+        $schedule = Schedule::where('id', $id)->first();
+        if ($schedule) {
+            $schedule->update($validatedData);
+        }
+
+        return redirect()->route('schedule.index')->with('message', 'Doctor Schedule has been updated successfully!!!');
     }
 
     /**
@@ -106,7 +121,10 @@ class DoctorScheduleController extends Controller
      */
     public function destroy($id)
     {
-        Schedule::findOrFail($id)->delete();
-        return redirect()->route('schedule.index')->with('message','Doctor Schedule has been deleted successfully!!!');
+        $schedule = Schedule::findOrFail($id);
+        if ($schedule) {
+            $schedule->delete();
+        }
+        return redirect()->route('schedule.index')->with('message', 'Doctor Schedule has been deleted successfully!!!');
     }
 }

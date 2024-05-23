@@ -23,12 +23,21 @@ class DoctorScheduleRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'doctor_id' => ['required'],
-            'in' => ['required','date_format:Y-m-d'],
-            'from' => ['required', 'date_format:H:i'],
-            'to' => ['required', 'date_format:H:i'],
+        $rules = [
+            'doctor_id' => 'required|integer',
+            'total_quota' => 'required|integer',
+            'from' => 'required|date_format:H:i',
+            'to' => 'required|date_format:H:i|after:from',
+            'status' => 'required|string',
         ];
+
+        if (is_array($this->input('days'))) {
+            $rules['days.*'] = 'required|string';
+        } else {
+            $rules['days'] = 'required|string';
+        }
+
+        return $rules;
     }
     public function messages()
     {

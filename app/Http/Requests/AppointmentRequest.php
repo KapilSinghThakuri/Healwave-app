@@ -24,7 +24,8 @@ class AppointmentRequest extends FormRequest
     public function rules()
     {
         return [
-            'doctor_id' => 'required',
+            'schedule_id' => 'required|integer',
+            'doctor_id' => 'required|integer',
             'time_interval' => 'required',
             'fullname' => 'required|string|max:255',
             'date_of_birth' => 'required|date',

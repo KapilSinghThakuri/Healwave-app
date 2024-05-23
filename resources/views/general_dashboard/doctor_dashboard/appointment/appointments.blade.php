@@ -22,8 +22,8 @@
                                     <th>Age</th>
                                     <th>Appointment Date</th>
                                     <th>Appointment Time</th>
-                                    <th>Status</th>
-                                    <!-- <th class="text-right">Action</th> -->
+                                    {{-- <th>Status</th>
+                                    <th class="text-right">Action</th> --}}
                                 </tr>
                             </thead>
                             <tbody>
@@ -38,7 +38,7 @@
                                     <td>{{ $appointment->patient->age }} years</td>
                                     <td>{{ $appointment->schedule->in }}</td>
                                     <td>{{ $appointment->time_interval }}</td>
-                                    <td>
+                                    {{-- <td>
                                         @if($appointment->status === 'approved')
                                         <span class="custom-badge status-green">Approved</span>
                                         @elseif($appointment->status === 'pending')
@@ -67,9 +67,9 @@
                                             </div>
                                         </div>
                                         @else
-                                        <!-- <a href="#" data-toggle="modal" data-target="#delete_appointment" style="font-size: 25px; color: red;"><i class="fa fa-trash-o" aria-hidden="true"></i></a> -->
+                                        <a href="#" data-toggle="modal" data-target="#delete_appointment" style="font-size: 25px; color: red;"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                                         @endif
-                                    </td>
+                                    </td> --}}
                                 </tr>
                                 @endforeach
                             </tbody>

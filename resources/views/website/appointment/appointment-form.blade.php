@@ -4,8 +4,7 @@
         <div class="container p-3" style="margin-top: 100px;">
             <div class="row">
                 <div class="col-lg-12">
-                    <form method="POST" action="{{ route('appointment.store', ['scheduleId' => $scheduleId]) }}"
-                        enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('appointment.store')}}" enctype="multipart/form-data">
                         @csrf
                         <div class="row mb-5">
                             <div class="col-lg-8 offset-md-2">
@@ -20,11 +19,9 @@
 
                             <div class="col-lg-12">
                                 <div class="row">
-
-
                                     <div class="col-sm-4 mb-4">
                                         <div class="form-group">
-                                            <label>Full Name: <span class="text-danger">*</span></label>
+                                            <label>Full Name <span class="text-danger">*</span></label>
                                             <input name="fullname" id="full_name" value="{{ old('full_name') }}"
                                                 class="form-control" type="text" placeholder="Enter your full name"
                                                 autofocus>
@@ -35,7 +32,7 @@
                                     </div>
                                     <div class="col-sm-4 mb-4">
                                         <div class="form-group">
-                                            <label>Date of Birth: <span class="text-danger">*</span></label>
+                                            <label>Date of Birth[AD] <span class="text-danger">*</span></label>
                                             <input name="date_of_birth" placeholder="Select Your DOB" id="date_of_birth"
                                                 class="form-control">
                                             @error('date_of_birth')
@@ -45,11 +42,11 @@
                                     </div>
                                     <div class="col-sm-4 mb-4">
                                         <div class="form-group gender-select">
-                                            <label class="gen-label">Gender: <span class="text-danger">*</span></label>
+                                            <label class="gen-label">Gender <span class="text-danger">*</span></label>
                                             <div class="form-check-inline">
                                                 <label class="form-check-label">
                                                     <input id="male" type="radio" name="gender"
-                                                        class="form-check-input" value="Male">Male
+                                                        class="form-check-input" value="Male"> Male
                                                     @error('male')
                                                         <span class="text-danger">{{ $message }}</span>
                                                     @enderror
@@ -58,7 +55,7 @@
                                             <div class="form-check-inline">
                                                 <label class="form-check-label">
                                                     <input id="female" type="radio" name="gender"
-                                                        class="form-check-input" value="Female">Female
+                                                        class="form-check-input" value="Female"> Female
                                                     @error('female')
                                                         <span class="text-danger">{{ $message }}</span>
                                                     @enderror
@@ -67,7 +64,7 @@
                                             <div class="form-check-inline">
                                                 <label class="form-check-label">
                                                     <input id="other" type="radio" name="gender"
-                                                        class="form-check-input" value="Other">Other
+                                                        class="form-check-input" value="Other"> Other
                                                     @error('other')
                                                         <span class="text-danger">{{ $message }}</span>
                                                     @enderror
@@ -77,7 +74,7 @@
                                     </div>
                                     <div class="col-sm-4 mb-4">
                                         <div class="form-group">
-                                            <label>Phone: <span class="text-danger">*</span></label>
+                                            <label>Phone <span class="text-danger">*</span></label>
                                             <input id="phone" name="phone" value="{{ old('phone') }}"
                                                 class="form-control" type="text" placeholder="Enter your phone">
                                             @error('phone')
@@ -87,7 +84,7 @@
                                     </div>
                                     <div class="col-sm-4 mb-4">
                                         <div class="form-group">
-                                            <label>Email: <span class="text-danger">*</span></label>
+                                            <label>Email <span class="text-danger">*</span></label>
                                             <input id="email" name="email" class="form-control"
                                                 value="{{ old('email') }}" type="email"
                                                 placeholder="Enter your email address">
@@ -99,7 +96,7 @@
 
                                     <div class="col-sm-4 mb-4">
                                         <div class="form-group">
-                                            <label>Parents Name:</label>
+                                            <label>Parents Name <span class="text-danger">*</span></label>
                                             <input name="parents_name" id="parents_name" value="{{ old('parents_name') }}"
                                                 class="form-control" type="text" autofocus
                                                 placeholder="Enter your parent's name">
@@ -110,7 +107,7 @@
                                     </div>
                                     <div class="col-sm-4 mb-4">
                                         <div class="form-group">
-                                            <label>Permanent Address: <span class="text-danger">*</span></label>
+                                            <label>Permanent Address <span class="text-danger">*</span></label>
                                             <input name="permanent_address" id="permanent_address"
                                                 value="{{ old('permanent_address') }}" class="form-control" type="text"
                                                 placeholder="Enter your full address">
@@ -121,7 +118,7 @@
                                     </div>
                                     <div class="col-sm-4 mb-4">
                                         <div class="form-group">
-                                            <label>Temporary Address:</label>
+                                            <label>Temporary Address</label>
                                             <input name="temporary_address" id="temporary_address"
                                                 value="{{ old('temporary_address') }}" class="form-control"
                                                 type="text" placeholder="Enter your full address">
@@ -132,7 +129,7 @@
                                     </div>
                                     <div class="col-sm-4 mb-4">
                                         <div class="form-group">
-                                            <label>Medical Report:</label>
+                                            <label>Medical Report</label>
                                             <input type="file" name="medical_history" value=""
                                                 class="form-control">
                                             @error('medical_history')
@@ -143,18 +140,24 @@
                                     <input type="hidden" name="doctor_id" value="{{ $doctor->id }}">
                                     <div class="col-sm-4 mb-4">
                                         <div class="form-group">
-                                            <label>Time Interval: <span class="text-danger">*</span></label>
-                                            <input id="time_interval" name="time_interval" type="text" readonly
-                                                class="form-control" value="{{ $timeInterval }}">
-                                            @error('time_interval')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
+                                            <label>Doctor <span class="text-danger">*</span></label>
+                                            <input id="doctor_id" name="" type="text" readonly
+                                                class="form-control" value="{{ $doctor->first_name }} {{ $doctor->middle_name }} {{ $doctor->last_name }}">
                                         </div>
                                     </div>
+                                    <input type="hidden" name="time_interval" value="{{ $checkUpInterval }}">
+                                    <div class="col-sm-4 mb-4">
+                                        <div class="form-group">
+                                            <label>Time Schedule <span class="text-danger">*</span></label>
+                                            <input id="time_interval" name="" type="text" readonly
+                                                class="form-control" value="{{ $checkUpInterval }}, {{ $checkUpDay }}">
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="schedule_id" value="{{ $scheduleId }}">
                                     <div class="row">
                                         <div class="col-sm-4">
                                             <div class="form-group">
-                                                <label>Reason:<span class="text-danger">*</span></label>
+                                                <label>Reason <span class="text-danger">*</span></label>
                                                 <textarea name="reason" class="form-control" rows="5" cols="20">{{ old('reason') }}</textarea>
                                                 @error('reason')
                                                     <span class="text-danger">{{ $message }}</span>
@@ -163,7 +166,7 @@
                                         </div>
                                         <div class="col-sm-8">
                                             <div class="form-group">
-                                                <label>Appointment Message:</label>
+                                                <label>Appointment Message </label>
                                                 <textarea name="appointment_message" class="form-control" rows="5" cols="20">{{ old('appointment_message') }}</textarea>
                                                 @error('appointment_message')
                                                     <span class="text-danger">{{ $message }}</span>

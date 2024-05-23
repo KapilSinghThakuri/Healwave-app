@@ -4,12 +4,8 @@ namespace App\Http\Controllers\General_Controller;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ScheduleRequest;
-use Carbon\Carbon;
-use Carbon\CarbonPeriod;
 use App\Models\Schedule;
 use App\Models\User;
 use App\Notifications\ScheduleCreatedNotification;
@@ -31,6 +27,17 @@ class ScheduleController extends Controller
         return view('general_dashboard.doctor_dashboard.schedule.index', compact('doctor', 'department', 'schedules'));
     }
 
+    public function updateStatus(Request $request, $scheduleId)
+    {
+        $status = $request->input('status');
+        $schedule = Schedule::findOrFail($scheduleId);
+        if ($schedule) {
+            $schedule->update([
+                'status' => $status,
+            ]);
+        }
+        return redirect()->route('my-schedule.index')->with('message', 'Your Schedule status has been updated successfully !!!');
+    }
     /**
      * Show the form for creating a new resource.
      *

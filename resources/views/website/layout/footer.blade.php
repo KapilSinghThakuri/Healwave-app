@@ -94,6 +94,7 @@
 <script src="{{ asset('general_Assets/js/main.js') }}"></script>
 <script src="{{ asset('general_Assets/js/userFeedback.js') }}"></script>
 <script src="{{ asset('general_Assets/js/lang.js') }}"></script>
+<script src="{{ asset('general_Assets/js/homepage.js') }}"></script>
 
 <!-- toastr JS Link  -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>

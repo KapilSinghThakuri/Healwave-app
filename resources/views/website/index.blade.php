@@ -5,6 +5,7 @@
     @inject('gallery_category_helper', 'App\Helpers\GalleryCategoryHelper')
     @inject('siteinfo_helper', 'App\Helpers\WebsiteInfoHelper')
     @inject('banner_helper', 'App\Helpers\BannerHelper')
+    @inject('schedule_helper', 'App\Helpers\ScheduleHelper')
 
     {{-- @dd($banner_helper->getHomeBanner()) --}}
     <!-- ======= Hero Section ======= -->
@@ -233,12 +234,13 @@
                                                                 <img src="{{ asset($doctor->profile) }}"
                                                                     alt="Profile Image">
                                                             </div>
-                                                            <div class="profile-details">
+                                                            <div class="profile-details text-center">
                                                                 <div class="profile-name">
                                                                     {{ $doctor->first_name }}{{ $doctor->middle_name }}
                                                                     {{ $doctor->last_name }}</div>
                                                                 <div class="profile-specialization">
-                                                                    {{ $doctor->educations[0]->specialization }}</div>
+                                                                    {{ $doctor->educations[0]->specialization }},
+                                                                    {{ $doctor->educations[0]->medical_degree }}</div>
                                                             </div>
                                                         </div>
 
@@ -251,48 +253,67 @@
                                                                     <div class="modal-header">
                                                                         <h5 class="modal-title"
                                                                             id="scheduleModalLabel-{{ $doctor->id }}">
-                                                                            Select your suitable schedule</h5>
+                                                                            Confirm Appointment</h5>
                                                                         <button type="button" class="btn-close"
                                                                             data-bs-dismiss="modal"
                                                                             aria-label="Close"></button>
                                                                     </div>
 
-                                                                    @php
-                                                                        $doctor_schedules = collect([]);
-                                                                        foreach ($schedules as $schedule) {
-                                                                            if ($schedule->doctor_id == $doctor->id) {
-                                                                                $doctor_schedules->push($schedule);
-                                                                            }
-                                                                        }
-                                                                    @endphp
-
-                                                                    @if ($doctor_schedules->isEmpty())
-                                                                        <p class="alert alert-danger">No Schedule !!! </p>
-                                                                    @else
-                                                                        @foreach ($doctor_schedules as $schedule)
+                                                                    <div class="modal-body">
+                                                                        <div class="text-center">
+                                                                            <img src="{{ asset($doctor->profile) }}"
+                                                                                class="rounded-circle mb-3"
+                                                                                alt="Profile Image"
+                                                                                style="width: 100px; height: 100px; object-fit: cover;">
+                                                                            <h5 class="mb-1">{{ $doctor->first_name }}
+                                                                                {{ $doctor->middle_name }}
+                                                                                {{ $doctor->last_name }}</h5>
+                                                                            <p class="text-muted mb-2">
+                                                                                {{ $doctor->educations[0]->specialization }},
+                                                                                {{ $doctor->educations[0]->medical_degree }}
+                                                                            </p>
+                                                                        </div>
                                                                             @php
-                                                                                $timeIntervals =
-                                                                                    $schedule->time_intervals;
+                                                                                $availableDays = $schedule_helper->getAvailableDays(
+                                                                                    $doctor->id,
+                                                                                );
                                                                             @endphp
-                                                                            <div class="container">
-                                                                                <div class="row">
-                                                                                    <p>{{ $schedule->in }}'s Schedules</p>
-                                                                                    @foreach ($timeIntervals as $interval)
-                                                                                        <!-- Check if the schedule time_interval is exist in interval or not -->
-                                                                                        @if (!$doctor->appointments->where('schedule_id', $schedule->id)->pluck('time_interval')->contains($interval))
-                                                                                            <div class="col-4 p-2">
-                                                                                                <a
-                                                                                                    href="{{ route('appointment.create', ['schedule' => $schedule->id, 'interval' => $interval]) }}">
-                                                                                                    <span
-                                                                                                        class="custom-badge status-blue">{{ $interval }}</span>
-                                                                                                </a>
-                                                                                            </div>
-                                                                                        @endif
-                                                                                    @endforeach
+                                                                            @if (!empty($availableDays))
+                                                                                <h6 class="text-center mb-3">Select an available slot of this week:</h6>
+
+                                                                                <form method="GET" action="{{ route('appointment.create', ['doctorId' => $doctor->id]) }}">
+                                                                                    <div class="d-block text-center gap-2 flex-wrap">
+                                                                                        @foreach ($availableDays as $schedule)
+                                                                                            @if ($schedule['totalQuota'] == $schedule['totalAppCount'])
+                                                                                                <input type="radio" name="schedule_id" value="{{ $schedule['id'] }}" class="hidden-radio" id="schedule_{{ $schedule['id'] }}" disabled>
+                                                                                                <label class="schedule-badge-disabled schedule-span" for="schedule_{{ $schedule['id'] }}">
+                                                                                                    {{ $schedule['day'] }} {{ $schedule['timeInterval'] }}
+                                                                                                </label>
+                                                                                                <p class="text-danger">Today's available seats are fully booked. Please check the next available schedule!</p>
+                                                                                            @else
+                                                                                                <input type="radio" name="schedule_id" value="{{ $schedule['id'] }}" class="hidden-radio" id="schedule_{{ $schedule['id'] }}" required>
+                                                                                                <label class="schedule-badge schedule-span" for="schedule_{{ $schedule['id'] }}">
+                                                                                                    {{ $schedule['day'] }}
+                                                                                                    {{ $schedule['timeInterval'] }}
+                                                                                                </label>
+                                                                                            @endif
+                                                                                        @endforeach
+                                                                                            <p class="select-schedule-message">Please select a schedule before confirming the appointment!</p>
+                                                                                    </div>
+                                                                                    <div class="modal-footer p-2 d-flex justify-content-between" style="border-top: none">
+                                                                                        <button type="button"
+                                                                                            class="btn btn-danger btn-md"
+                                                                                            data-bs-dismiss="modal">Cancel</button>
+                                                                                        <button type="submit" class="btn btn-primary btn-md" id="confirm-appointment">Confirm Appointment</button>
+                                                                                    </div>
+                                                                                </form>
+                                                                            @else
+                                                                                <div class="alert alert-warning text-center"
+                                                                                    role="alert">
+                                                                                    There are no schedules available!
                                                                                 </div>
-                                                                            </div>
-                                                                        @endforeach
-                                                                    @endif
+                                                                            @endif
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
