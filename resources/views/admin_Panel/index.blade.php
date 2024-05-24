@@ -262,9 +262,6 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card p-2">
-                        <div class="card-title text-center">
-                            Event Calender
-                        </div>
                         <div id="fullcalendar"></div>
                     </div>
                 </div>
@@ -353,17 +350,26 @@
                         var events = [];
                         var calendar = new FullCalendar.Calendar(fullcalendar, {
                             initialView: 'dayGridMonth',
-                            locale: 'ne',
+                            // locale: 'ne',
                             height: 600,
                             eventBackgroundColor: '#00ce7c',
                             editable: true,
-
+                            themeSystem: 'bootstrap',
                             headerToolbar: {
                                 left: 'today prev,next',
                                 center: 'title',
                                 right: 'dayGridMonth timeGridWeek timeGridDay',
                             },
                             events: '/Healwave/admin/event',
+                            eventContent: function(arg) {
+                                var title = arg.event.title;
+                                var interval = arg.event.extendedProps.interval;
+                                
+                                var contentEl = document.createElement('div');
+                                contentEl.innerHTML = '<b>' + title + '</b><br>' + interval;
+                                
+                                return { domNodes: [contentEl] };
+                            }
                         });
                         calendar.render();
                     });

@@ -378,8 +378,8 @@
 }
 
 .fc-header-toolbar {
-    color: #155724;
-    background-color: #d4edda;
+    color: white;
+    background-color: #96d6e7;
     border-color: #c3e6cb;
 
     position: relative;
@@ -387,6 +387,65 @@
     margin-bottom: 1rem;
     border: 1px solid transparent;
     border-radius: .25rem;
+}
+
+.fc .fc-button {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+}
+
+.fc .fc-button:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.fc .fc-button:active {
+    background-color: #004085;
+    border-color: #004085;
+}
+
+.fc .fc-button:focus {
+    box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, .5);
+}
+
+.fc .fc-button.fc-today-button,
+.fc .fc-button.fc-prev-button,
+.fc .fc-button.fc-next-button {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+}
+
+.fc .fc-button.fc-today-button:hover,
+.fc .fc-button.fc-prev-button:hover,
+.fc .fc-button.fc-next-button:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.fc .fc-button.fc-today-button:active,
+.fc .fc-button.fc-prev-button:active,
+.fc .fc-button.fc-next-button:active {
+    background-color: #004085;
+    border-color: #004085;
+}
+
+.fc-dayGridMonth-button.fc-button.fc-button-primary.fc-button-active {
+    color: white;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+.fc-dayGridMonth-button.fc-button.fc-button-primary.fc-button-active:hover {
+    color: white;
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.fc .fc-button.fc-today-button:focus,
+.fc .fc-button.fc-prev-button:focus,
+.fc .fc-button.fc-next-button:focus {
+    box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, .5);
 }
 
 /* bar chart styles */

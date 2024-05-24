@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin_Controller;
 
 use Exception;
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Doctor;
 use App\Models\Country;
@@ -491,14 +492,31 @@ class DoctorController extends Controller
         ]);
     }
 
+    // JS Event Calender
     public function doctorScheduleEvent()
     {
         $schedules = Schedule::with('doctor')->get()->map(function ($schedule) {
+            $currentDate = Carbon::now('Asia/Kathmandu');
+            $currentDay = $currentDate->format('l');
+            $daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            $currentDayIndex = array_search($currentDay, $daysOfWeek);
+            
+            $dayIndex = array_search($schedule->days, $daysOfWeek);
+            
+            if ($dayIndex >= $currentDayIndex)
+            {
+                $daysUntilNext = $dayIndex - $currentDayIndex;
+                $nextOccurrenceDate = $currentDate->copy()->addDays($daysUntilNext);
+                $nextAvailableDays = $nextOccurrenceDate->format('Y-m-d');
+            }
+
             return [
-                'title' => $schedule->doctor->first_name . ' ' . $schedule->doctor->middle_name . ' ' . $schedule->doctor->last_name,
-                'start' => date('Y-m-d', strtotime($schedule->in)),
+                'title' => 'Dr.' . $schedule->doctor->first_name . ' ' . $schedule->doctor->last_name,
+                'start' => $nextAvailableDays ?? null,
+                'interval' => $schedule->from . '-' . $schedule->to,
             ];
         });
+
         return response()->json($schedules);
     }
 }

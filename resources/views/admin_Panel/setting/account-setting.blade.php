@@ -1,4 +1,5 @@
 @include('admin_Panel.layout.header')
+@include('admin_Panel.layout.navbar')
 
 <div class="setting-wrapper">
     <div class="content">
