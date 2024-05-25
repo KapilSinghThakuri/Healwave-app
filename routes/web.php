@@ -34,6 +34,7 @@ use App\Http\Controllers\Admin_Controller\DoctorScheduleController;
 use App\Http\Controllers\General_Controller\DoctorDashboardController;
 use App\Http\Controllers\General_Controller\DoctorNotificationController;
 use App\Http\Controllers\General_Controller\PatientAppointmentController;
+use App\Http\Controllers\Website\BotManController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -94,9 +95,6 @@ Route::prefix('Healwave/admin')->group(function () {
         Route::post('users/import/', [UserController::class, 'usersImport'])->name('users.import');
 
         Route::PATCH('StatusUpdate/{menuId}', [MenuController::class, 'MenuStatusUpdate'])->name('menu.StatusUpdate');
-
-       
-        
 
         Route::post('/validate-email', [DoctorController::class, 'validateEmail'])->name('validate.email');
 
@@ -189,4 +187,4 @@ Route::prefix('Healwave')->group(function () {
     Route::get('contact', [ContactController::class, 'index'])->name('website.contact');
     Route::get('services', [ServiceController::class, 'index'])->name('website.service');
 });
-
+Route::match(['get', 'post'], '/botman', [BotManController::class, 'handle']);

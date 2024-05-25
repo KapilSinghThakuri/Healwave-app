@@ -38,8 +38,8 @@
                         </div>
                         <div class="form-group d-flex justify-content-between align-items-center">
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="remember" name="remember">
-                                <label class="custom-control-label" for="remember">Remember Me</label>
+                                <input type="checkbox" class="custom-control-input" id="remember_me" name="remember">
+                                <label class="custom-control-label" for="remember_me">Remember Me</label>
                             </div>
                             <a href="{{ route('password.request') }}" class="text-muted">Forgot your password?</a>
                         </div>

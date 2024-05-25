@@ -40,6 +40,8 @@
 
     <link rel="stylesheet" type="text/css" href="{{ asset('general_Assets/css/page-style.css') }}">
 
+    <link rel="stylesheet" type="text/css" href="{{ asset('general_Assets/css/custom-botman.css') }}">
+
     <!-- jQuery CDN -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -53,6 +55,9 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    
+    {{-- BotMan CSS Link --}}
+    {{-- <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/botman-web-widget@0/build/assets/css/chat.min.css"> --}}
 </head>
 
 <body>

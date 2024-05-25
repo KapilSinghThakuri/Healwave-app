@@ -62,6 +62,15 @@
             </div>
         </div>
     </div>
+    {{-- BotMan --}}
+    <script>
+        var botmanWidget = {
+            aboutText: 'Healwave',
+            title: 'Healwave Hospital Helpdesk',
+            introMessage: 'Hi there! I\'m here to help you with any questions or services you need. How can I help?',
+        };
+    </script>
+    <script src='https://cdn.jsdelivr.net/npm/botman-web-widget@0/build/js/widget.js'></script>
 
     <div class="container d-md-flex py-4">
 
@@ -99,6 +108,8 @@
 <!-- toastr JS Link  -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+
 <script type="text/javascript">
     @if (Session::has('message'))
         toastr.options = {
